@@ -35,18 +35,12 @@ FROM table1
 INNER JOIN table2
 ON table1.column_name = table2.column_name;
 ```
-![img.png](images/img.png)
-![img_1.png](images/img_1.png)
-![img_2.png](images/img_2.png)
-![img_3.png](images/img_3.png)
-![img_4.png](images/img_4.png)
-
 ### Group By
 The GROUP BY statement is often used with aggregate functions (COUNT(), MAX(), MIN(), SUM(), AVG()) to group,
 the result-set by one or more columns.
 
 ### HAVING
-The HAVING clause was added to SQL because the WHERE keyword cannot be used with aggregate functions.
+The HAVING clause was added to SQL because the WHERE keyword cannot be used with aggregate functions or group by.
 
 ### Index 
 In SQL, you can create an index using the CREATE INDEX statement. An index is a data structure that improves.,
@@ -65,33 +59,39 @@ SELECT * FROM Customers WHERE CustomerName = 'John Smith';
 2) Non-clustered indexes
 
 ## ACID principle
-The ACID principle is a set of properties that guarantee reliable processing of database transactions, ensuring the integrity and consistency of the database. ACID stands for Atomicity, Consistency, Isolation, and Durability. Let's break down each component:
+The ACID principle is a set of properties that guarantee reliable processing of database transactions, ensuring the integrity and consistency of the database.
+ACID stands for Atomicity, Consistency, Isolation, and Durability. Let's break down each component:
 
-1. Atomicity
-   Definition: Atomicity ensures that a transaction is treated as a single, indivisible unit of work. This means that either all the operations within the transaction are completed successfully, or none of them are.
-   Example: Consider a bank transfer where money is debited from one account and credited to another. Atomicity ensures that both operations (debit and credit) succeed together. If one fails, the entire transaction is rolled back, so no partial updates are made.
-2. Consistency
-   Definition: Consistency ensures that a transaction takes the database from one valid state to another, maintaining the integrity of the data according to predefined rules (constraints, triggers, etc.).
-   Example: If a database has a constraint that ensures a bank account balance cannot go below zero, the consistency principle ensures that no transaction will violate this rule, even temporarily.
-3. Isolation
-   Definition: Isolation ensures that transactions are executed in isolation from each other, meaning that the operations within a transaction are not visible to other transactions until the transaction is committed. This prevents transactions from interfering with each other.
-   Example: If two transactions are trying to update the same account balance simultaneously, isolation ensures that one transaction's changes are not visible to the other until the first transaction is complete, preventing conflicts and ensuring data integrity.
-4. Durability
-   Definition: Durability guarantees that once a transaction has been committed, it will remain in the system, even in the event of a system failure (e.g., power outage, crash).
-   Example: After a successful bank transfer, the changes made to the account balances are permanently stored in the database. Even if the system crashes immediately after the transaction, the changes will be preserved when the system is restored.
+* 1. Atomicity:
+   ensures that a transaction is treated as a single, indivisible unit of work. This means that either all the operations within the transaction are completed successfully,
+   or none of them are. 
+   Example: Consider a bank transfer where money is debited from one account and credited to another. Atomicity ensures that both operations
+   (debit and credit) succeed together. If one fails, the entire transaction is rolled back, so no partial updates are made.
+* 2. Consistency:
+    ensures that a transaction takes the database from one valid state to another, maintaining the integrity of the data according to predefined rules 
+   (constraints, triggers, etc.).
+   Example: If a database has a constraint that ensures a bank account balance cannot go below zero, the consistency principle ensures that no transaction
+   will violate this rule, even temporarily.
+* 3. Isolation: ensures that transactions are executed in isolation from each other, meaning that the operations within a transaction are not visible to other
+   transactions until the transaction is committed.
+   Example: If two transactions are trying to update the same account balance simultaneously, isolation ensures that one transaction's changes are not visible
+   to the other until the first transaction is complete, preventing conflicts and ensuring data integrity.
+* 4. Durability: guarantees that once a transaction has been committed, it will remain in the system, even in the event of a system failure (e.g., power outage, crash).
+    Example: After a successful bank transfer, the changes made to the account balances are permanently stored in the database. 
+    Even if the system crashes immediately after the transaction, the changes will be preserved when the system is restored.
    
-5. Summary:
+* Summary:
    Atomicity: All or nothing execution.
    Consistency: Valid state transitions.
    Isolation: Independent transaction execution.
    Durability: Permanent storage of committed changes.
 
-6. In database systems and concurrent programming, optimistic and pessimistic locking are two strategies for handling concurrent access to shared 
+## In database systems and concurrent programming, optimistic and pessimistic locking are two strategies for handling concurrent access to shared 
    resources or data to prevent conflicts and ensure consistency.
 
- * Optimistic Locking
-   Optimistic Locking assumes that multiple transactions can complete without conflict and only checks for conflicts before committing changes.
-   This approach is based on the assumption that conflicts are rare, so it allows transactions to proceed without locking the data for the duration of the transaction. Instead, it verifies that no other transaction has modified the data before making a change.
+ * Optimistic Locking: assumes that multiple transactions can complete without a conflict and only checks for conflicts before committing changes.
+   This approach is based on the assumption that conflicts are rare, so it allows transactions to proceed without locking the data for the duration of the transaction.
+   Instead, it verifies that no other transaction has modified the data before making a change.
 
 How it works:
 Each record has a version number or timestamp.
@@ -122,8 +122,9 @@ private Long id;
     // Getters and setters
 }
 ```
-   * Pessimistic Locking
-    Pessimistic Locking assumes that conflicts are likely, so it prevents other transactions from accessing data that a transaction is working with. This is done by locking the data as soon as a transaction starts. Any other transaction that tries to access the locked data is blocked until the lock is released, thus avoiding conflicts by preventing concurrent access.
+* Pessimistic Locking: assumes that conflicts are likely, so it prevents other transactions from accessing data that a transaction is working with.
+This is done by locking the data as soon as a transaction starts. Any other transaction that tries to access the locked data is blocked until the lock is released,
+thus avoiding conflicts by preventing concurrent access.
 
 How it works:
 When a transaction reads data, it applies a lock to that data.
@@ -135,14 +136,18 @@ Suitable for high-contention environments where conflicts are expected (e.g., ba
 **Cons:**
 Can lead to performance bottlenecks because transactions may be forced to wait for locks to release.
 Requires careful handling to avoid deadlocks.
-![img_7.png](images/img_7.png)
+![img_7.png](..%2Fimages%2Fsql%2Fimg_7.png)
+
 ## In Spring Data JPA, 
-you can use pessimistic locking with PESSIMISTIC_READ or PESSIMISTIC_WRITE to control concurrent access to database records. Pessimistic locks are applied at the database level and help to prevent other transactions from reading or modifying the data while it's locked.
+you can use pessimistic locking with PESSIMISTIC_READ or PESSIMISTIC_WRITE to control concurrent access to database records. 
+Pessimistic locks are applied at the database level and help to prevent other transactions from reading or modifying
+the data while it's locked.
 
 Here's how you can use pessimistic locks in Spring Data JPA:
 
 1. Using @Lock Annotation in Repositories
-   You can use the @Lock annotation on repository methods to specify the locking mode. Spring Data JPA provides LockModeType.PESSIMISTIC_READ and LockModeType.PESSIMISTIC_WRITE.
+   You can use the @Lock annotation on repository methods to specify the locking mode. Spring Data JPA provides 
+2. LockModeType.PESSIMISTIC_READ and LockModeType.PESSIMISTIC_WRITE.
 
 PESSIMISTIC_READ: Prevents other transactions from writing to the locked data, but allows other transactions to read it.
 PESSIMISTIC_WRITE: Prevents other transactions from reading or writing to the locked data.
@@ -212,3 +217,6 @@ Notes
 Pessimistic locks can lead to database contention if overused, as they block other transactions, so use them only when necessary.
 Transactions: Pessimistic locks require a transaction, so always use @Transactional for methods where you apply such locks.
 Timeouts: Some databases support a timeout for locks to avoid indefinite blocking. You can configure this in the database settings or specify it in the @QueryHint.
+
+## 1). Difference between where and having in SQL?
+![img_3.png](..%2Fimages%2Fsql%2Fimg_3.png)

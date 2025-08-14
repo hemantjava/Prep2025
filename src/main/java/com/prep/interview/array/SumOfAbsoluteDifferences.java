@@ -1,6 +1,5 @@
 package com.prep.interview.array;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -13,20 +12,35 @@ import java.util.Arrays;
  */
 public class SumOfAbsoluteDifferences {
     public static void main(String[] args) {
-        int[] nums = {2,3,5};
+        int[] nums = {2, 3, 5};
         System.out.println(Arrays.toString(getSumAbsoluteDifferences(nums)));//[4,3,5]
+        System.out.println(Arrays.toString(getSumAbsoluteDifferences1(nums)));//[4,3,5]
     }
 
     public static int[] getSumAbsoluteDifferences(int[] nums) {
-      int[] result = new int[nums.length];
-      int sum = 0;
-      for (int i = 0; i < nums.length; i++) {
-          for (int num : nums) {
-              sum += Math.abs(nums[i] - num);
-          }
-          result[i] = sum;
-          sum = 0;
-      }
-      return result;
+        int[] result = new int[nums.length];
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int num : nums) {
+                sum += Math.abs(nums[i] - num);
+            }
+            result[i] = sum;
+            sum = 0;
+        }
+        return result;
+    }
+
+    public static int[] getSumAbsoluteDifferences1(int[] nums) {
+        int[] rs = new int[nums.length];
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int n : nums) {
+                sum += Math.abs(nums[i] - n);
+            }
+            rs[i] = sum;
+            sum = 0;
+
+        }
+        return rs;
     }
 }

@@ -294,4 +294,22 @@ Doesn’t handle all Unicode whitespace characters
 Introduced: Java 11
 Definition: Removes all Unicode whitespace characters from both ends, according to Character.isWhitespace().
 Better Internationalization:
-Correctly handles spaces from other scripts and special characters.
+Correctly handles spaces from other scripts and special characters
+
+## Can overload and overriding static method?
+We can overload static method but not overriding.
+Because, overloading supports class level context and static method also By compiler.
+And overriding support Object level context By JVM
+
+## Marker/tag Interface ?
+An interface doesn't have methods, fields and constants is called Marker/tag interface.
+or "An empty interface is known as marker/tag interface.
+The following types of marker interface:
+      a).Serializable interface > belongs to java.io package.
+      b).Cloneable interface > belongs to java.lang package.
+
+## Collection vs Collections?
+Collection is an interface.
+Which can be used to represent a group of individual objects as a single entity.
+Collections are a utility class present in util package. to define several utility methods (like sorting, searching)
+for collection object.

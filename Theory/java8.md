@@ -126,3 +126,20 @@ static class Node<K,V> implements Map.Entry<K,V> {
 * Red-Black Tree for Collision Resolution: Improved efficiency in case of high collisions.
 * Improved Hashing: A better secondary hash function reduces the chances of poor distribution.
 * Performance Optimization: Average-case complexity remains O(1), with worst-case reduced to O(log n) in high-collision scenarios.
+
+Imp-Q:3). Difference between Stream(Sequential Stream) and Parallel Stream?
+**Stream:**
+"If we want to process collection of objects in a single CPU core then we should go for Sequential Stream".
+Runs on a single-core of the computer.
+Performance is poor.
+Order is maintained.
+More reliable and less error-prone,
+Platform independent.
+
+**Parallel Stream:**
+"If we want to process collection of objects in multiple CPU cores then we should go for Parallel Stream."
+Runs on multiple-core of the computer.
+The performance is high.
+Doesn't care about order.
+Less reliable and more error (error-prone).
+Platform dependent.

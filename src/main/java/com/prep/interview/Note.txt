@@ -1,0 +1,10 @@
+jks (creation)
+certificate installation microservice ?
+memory leakage in microservice (where we can find and how we can fixed)?
+Transaction management in across microservice?
+diff b/w concurrency and parallelism ?
+where used executors framework ?
+Discovery server?
+where we defined memory size in Microservice?
+JWT workflow in you project ?
+OAuth 2.0 workflow and configuration?

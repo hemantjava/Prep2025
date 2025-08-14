@@ -6,8 +6,8 @@ import java.util.List;
 public class SecondHighAndLowInList {
     public static void main(String[] args) {
         List<Integer> list = List.of(1,8,3,6,9,8);
-        System.out.println(getSecondHigh(list));
-        System.out.println(getSecondLow(list));
+        System.out.println(getSecondHigh(list));//8
+        System.out.println(getSecondLow(list));//3
 
     }
 
@@ -17,7 +17,6 @@ public class SecondHighAndLowInList {
                 .distinct()
                 .sorted(Comparator.reverseOrder())
                 .skip(1)
-                .limit(1)
                 .findFirst()
                 .orElse(0);
     }
@@ -28,8 +27,7 @@ public class SecondHighAndLowInList {
                 .distinct()
                 .sorted()
                 .skip(1)
-                .limit(1).
-                findFirst()
+                .findFirst()
                 .orElse(0);
     }
 }
