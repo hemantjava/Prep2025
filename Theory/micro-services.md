@@ -55,7 +55,7 @@ in distributed systems.
 experiencing high latency.
 When the circuit breaker detects a problem with the service, it "trips" and temporarily stops making further requests to
 the service.
-![img_6.png](images%2Fimg_6.png)
+![img_6.png](..%2Fimages%2Fmicro-services%2Fimg_6.png)
 
 The circuit breaker has three states: open, closed, and half-open.
 -> In the closed state, the circuit breaker allows calls to pass through to the service as normal.
