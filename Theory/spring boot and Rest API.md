@@ -71,14 +71,13 @@ Where it works:
 * CORS handling
 
 2️⃣ Interceptor
-Works Spring MVC level (inside DispatcherServlet).
-Works on controller method calls.
-Use cases:
-Authentication & authorization
-Modifying model data
-Measuring request processing time
-API versioning checks
-![img.png](img.png)
+* Works Spring MVC level (inside DispatcherServlet).
+* Works on controller method calls.
+* Use cases:
+* Authentication & authorization
+* Modifying model data
+* Measuring request processing time
+* API versioning checks
 
 ## **What is CAP theorem**
 (Eric Brewer’s theorem) says that in a distributed system, 

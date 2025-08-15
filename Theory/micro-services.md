@@ -79,7 +79,7 @@ while the closed state refers to the circuit breaker allowing calls to the servi
 
 ### Orchestration and choreography
 
-these are two different approaches to managing interactions between services in a distributed system, particularly in
+These are two different approaches to managing interactions between services in a distributed system, particularly in
 the context of microservices and service-oriented architectures (SOA). Here's how they differ:
 
 Orchestration:
@@ -113,17 +113,15 @@ Choreography:
   event and processes the payment,
   and so on.
 
-Advantages:
-
+**Advantages**:
 * More resilient and scalable since there is no single point of failure.
 * Promotes loose coupling and flexibility, making it easier to add or modify services without affecting others.
 
-Disadvantages:
-
+**Disadvantages**:
 * Harder to manage and monitor as the system grows in complexity, with multiple services interacting asynchronously.
 * Debugging and tracing issues can be more challenging due to the lack of a centralized flow.
 
-Summary:
+**Summary**:
 
 * Orchestration: Centralized control with a single orchestrator managing the workflow. Easier to manage but can create a
   bottleneck.
@@ -131,34 +129,16 @@ Summary:
 * Choreography: Decentralized, event-driven interactions between services. More flexible and scalable but harder to
   manage and monitor.
   -> Kafka,RabbitMQ,AWS SNS/SQS
-  1️⃣ CQRS (Command Query Responsibility Segregation)
-  Definition
 
-CQRS is an architectural pattern that separates the read (Query) and write (Command) operations into different models instead of using the same data model for both.
+## What is service discovery?
 
-Why?
+* is a central registry where microservices can register themselves and discover other services. It's 
+a crucial component for service-to-service communication in distributed systems.
+```java
+@EnableEurekaServer  //-> server
+@EnableDiscoveryClient //->client
+```
 
-In a typical CRUD service, the same database model handles both reads and writes.
-
-As systems grow, read and write workloads have different performance, scalability, and security requirements.
-
-CQRS splits them for independent scaling and optimization.
-
-How it works
-
-Command side → Handles create/update/delete (writes).
-
-Query side → Handles reads (fetch data).
-
-Both can use different databases optimized for their purpose.
-
-Example
-
-E-commerce order service:
-
-Command Service → Validates and creates new orders in a write-optimized DB (like PostgreSQL).
-
-Query Service → Fetches order details from a read-optimized DB (like ElasticSearch).
 
 
 
