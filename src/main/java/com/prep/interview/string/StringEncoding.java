@@ -19,7 +19,7 @@ public class StringEncoding {
         char[] charArray = str.toCharArray();
         Map<Character, Integer> map = new LinkedHashMap<>();
         for (char c : charArray) {
-            map.put(c, map.getOrDefault(c, 0) + 1);
+            map.put(c, map.merge(c, 1, Integer::sum));
         }
         StringBuilder sb = new StringBuilder();
         map.forEach((k, v) -> sb.append(v).append(k));
@@ -39,11 +39,11 @@ public class StringEncoding {
         StringBuilder sb = new StringBuilder();
         int count = 1;
         for (int i = 1; i <= inputString.length(); i++) {
-            if ( i < inputString.length() && inputString.charAt(i) == inputString.charAt(i - 1)) {  //i < inputString.length() adding extra condition
+            if (i < inputString.length() && inputString.charAt(i) == inputString.charAt(i - 1)) {  //i < inputString.length() adding extra condition
                 count++;
             } else {
-                sb.append(count).append(inputString.charAt(i - 1));
-                count = 1;
+                sb.append(count).append(inputString.charAt(i - 1)); // starting from 1st char
+                count = 1;//reset the count
             }
         }
         //  sb.append(count).append(inputString.charAt(inputString.length() - 1));

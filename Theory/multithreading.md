@@ -135,3 +135,72 @@ private final Lock lock = new ReentrantLock();
 ### Race condition 
  Occurs when two or more threads access shared data and try to change it at the same time. Since thread scheduling can lead to unpredictable thread execution order, 
  the final outcome depends on the specific sequence of thread execution, which can lead to unexpected and incorrect behavior.
+
+### Difference between concurrency and parallelism in a Java (and general computing) context:
+* 1. Concurrency
+  * Concurrency is about dealing with multiple tasks at the same time, but not necessarily executing them simultaneously.
+    Tasks make progress in overlapping time periods, often by switching between them (context switching).
+  * Managed by threads scheduled by the JVM/OS.
+  * May run on a single CPU core by switching quickly between tasks.
+  * Example ExecutorService can run multiple tasks concurrently even on one core.
+![img_3.png](..%2Fimages%2Fmulti-threading%2Fimg_3.png)
+![img_4.png](..%2Fimages%2Fmulti-threading%2Fimg_4.png)
+  
+* 2. Parallelism
+  * Parallelism is about actually executing multiple tasks at the same instant.
+  * Requires multiple CPU cores or processors.
+  * Threads run truly simultaneously on different CPU cores.
+  * Example Using ForkJoinPool or parallel streams (.parallelStream()),split the tasks and run in parallel threads on multiple cores.
+
+## Difference Platform Thread (Traditional Java Thread) VS Virtual Thread (Java 19+ – Project Loom)
+
+### Platform Thread (Traditional Java Thread)
+* Definition: A platform thread is a wrapper around an OS thread.
+* Operating System (OS) thread.
+* Creation Cost: Expensive – creating too many leads to high memory + scheduling overhead.
+* Blocking Behavior: If a platform thread blocks (e.g., on I/O, sleep(), or join()), its underlying OS thread is also blocked → wasted resource.
+* Concurrency Model: Limited concurrency (can’t create thousands/millions easily).
+* Use Cases:
+  * Long-running CPU-bound tasks.
+  * Situations where thread count is relatively small but predictable.
+
+### Virtual Thread (Java 19+ – Project Loom)    
+* Definition: A virtual thread is a lightweight thread managed by the JVM, not directly tied to an OS thread.
+* Runs on top of **a small pool of carrier platform thread**s (like a thread scheduler).
+* Creation Cost: Very cheap – you can create millions of virtual threads.
+* Blocking Behavior: If a virtual thread blocks, the JVM simply unmounts it from the **carrier thread**, freeing the OS thread to run others.
+* Concurrency Model: Massive concurrency (millions of concurrent tasks possible).
+* Use Cases:
+  * I/O-bound applications (network servers, DB calls, HTTP requests).
+  * High-concurrency workloads (like handling 1M HTTP requests in parallel).
+* Note:-👉 In short:
+  * Platform threads = heavyweight, OS-backed.
+  * Virtual threads = lightweight, JVM-scheduled, scalable.
+![img.png](..%2Fimages%2Fmulti-threading%2Fimg.png)
+![img_1.png](..%2Fimages%2Fmulti-threading%2Fimg_1.png)
+![img_2.png](..%2Fimages%2Fmulti-threading%2Fimg_2.png)
+
+### ThreadLocal in Java
+
+* ThreadLocal provides thread-local variables, i.e., variables that are unique to each thread.
+* Each thread accessing a ThreadLocal has its own isolated copy of the variable.
+* No thread can see or modify another thread’s value.
+* How it works
+  * Internally, each Thread maintains a map (ThreadLocalMap) that holds values for its ThreadLocal variables.
+  * When you call get() or set() on a ThreadLocal, it fetches/updates the value from the calling thread’s map.
+* ✅ In short:
+  ThreadLocal = thread-specific storage.
+  Each thread gets its own copy of the variable, isolated from others.
+
+  * Use Cases
+     * Maintaining user/session context in web apps (e.g., storing request ID).
+     * Holding database connection per thread in connection pools.
+     * Preventing shared mutable state without synchronization.
+
+  * Important Points
+     * ThreadLocal helps avoid synchronization but does not replace proper design.
+     * Always call remove() after use (especially in thread pools), otherwise memory leaks can happen because threads are reused.
+```java
+ThreadLocal.withInitial(()->0);
+new ThreadLocal();
+```

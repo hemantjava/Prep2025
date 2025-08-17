@@ -136,7 +136,35 @@ Idempotent (deleting twice is the same as deleting once).
 Ans). The Java Persistence API (JPA) is the specification of Java that is used to persist data between a Java object and
 relational database. JPA acts as a bridge between object-oriented domain models and relational database systems.
 
-## What are @RequestParam, @RequestBody, @PathVariable ?
+### What are @RequestParam, @RequestBody, @PathVariable ?
 @RequestParam: Is used to extract the fixed value from the query string.
 @RequestBody: Is used to extract the entire request body from an incoming HTTP POST.
 @PathVariable: Is used to extract dynamic values from the URI/URL path.
+
+### Difference @Component vs @Bean 
+![img.png](..%2Fimages%2Fspring%20boot%2Fimg.png)
+
+### Difference between @Component,@Service,@RestController,@Repository
+
+#### 1. @Component
+* Generic stereotype annotation. Marks a class as a Spring-managed bean. Detected automatically via component scanning.
+* Parent annotation: All others (@Service, @Repository, @Controller, @RestController) are specializations of @Component.
+#### 2. @Service
+* Semantically indicates that the class holds business logic / service layer.
+* Improves readability & clarity in layered architecture.
+* Spring may apply additional features in future (currently same as @Component).
+
+#### 3. @Repository
+* Indicates that the class is part of the DAO / persistence layer.
+* Provides an extra feature:Exception translation → Converts low-level persistence exceptions (e.g., SQLException) 
+  into Spring’s DataAccessException hierarchy.
+#### 4. @RestController
+* Combines @Controller + @ResponseBody.
+* Used in Spring MVC REST APIs.
+*Every method automatically returns JSON/XML response body, instead of resolving a view.
+
+### ✅ In short for interviews:
+* @Component → generic bean.
+* @Service → business logic.
+* @Repository → persistence + exception translation.
+* @RestController → web REST controller (@Controller + @ResponseBody).

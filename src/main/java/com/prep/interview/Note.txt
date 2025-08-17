@@ -2,17 +2,15 @@ jks (creation)
 certificate installation microservice ?
 memory leakage in microservice (where we can find and how we can fix)?
 Transaction management in across microservice?
-diff b/w concurrency and parallelism ?
+diff b/w concurrency and parallelism ? (done)
 where used an executor framework?
 Discovery server?
 where we defined memory size in Microservice?
 JWT workflow in your project?
 OAuth 2.0 workflow and configuration?
-
-
-
-
-
-
+What is local thread (done)
+AOP
+SQL indexing and Materialized view?
+Logging pattern console?
 
 *-+ cache?

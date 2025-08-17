@@ -29,3 +29,7 @@ Both can use different databases optimized for their purpose.
     * Query calls (GET /orders/{id}) go to the Read DB.
 ### Disadvantage: -
 * Client may experience stale (old) data
+![img.png](..%2F..%2Fimages%2Fms-d-pattern%2Fimg.png)
+
+### Event Sourcing
+

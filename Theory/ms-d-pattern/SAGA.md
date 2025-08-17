@@ -34,3 +34,5 @@ Handles failures and compensations.
 
 * ✅ Pros: Easier to manage flow.
 * ❌ Cons: Orchestrator becomes central dependency.
+
+![img.png](../../images/ms-d-pattern/img.png)
