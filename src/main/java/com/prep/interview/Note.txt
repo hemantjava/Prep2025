@@ -1,7 +1,7 @@
 jks (creation)
 certificate installation microservice ?
 memory leakage in microservice (where we can find and how we can fix)?
-Transaction management in across microservice?
+Transaction management in across microservice? done
 diff b/w concurrency and parallelism ? (done)
 where used an executor framework?
 Discovery server?
@@ -11,6 +11,6 @@ OAuth 2.0 workflow and configuration?
 What is local thread (done)
 AOP
 SQL indexing and Materialized view?
-Logging pattern console?
+Logging pattern console? done
 
-*-+ cache?
+*-+ cache? done
