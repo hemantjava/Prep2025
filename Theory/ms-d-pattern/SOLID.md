@@ -243,7 +243,7 @@ High-level modules should not depend on low-level modules. Both should depend on
 Example: Violating DIP
 ```java
 class MySQLDatabase {
-public void connect() {
+public void connect() { //connect methods should come from defined in interface 
 System.out.println("Connecting to MySQL");
 }
 }

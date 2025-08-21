@@ -168,3 +168,13 @@ relational database. JPA acts as a bridge between object-oriented domain models 
 * @Service → business logic.
 * @Repository → persistence + exception translation.
 * @RestController → web REST controller (@Controller + @ResponseBody).
+
+### GZIP ?
+* GZIP = smaller payloads + faster transfer + lower bandwidth + better UX.
+```yaml
+server:
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,text/css,application/javascript
+    min-response-size: 10KB # avoid compression <10KB [CUP usage]
+```

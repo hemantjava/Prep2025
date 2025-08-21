@@ -90,11 +90,6 @@ CountDownLatch is used to synchronize one or more threads by waiting for them to
 *) Constructor: CyclicBarrier takes two arguments: the number of threads that need to reach the barrier and a Runnable that is
     executed when all threads reach the barrier.
     CountDownLatch takes a single argument that represents the number of events that need to occur before the latch is released.
-
-### Difference between Future and CompletableFuture?
- - a CompletableFuture is an extension of Future that allows for more advanced composition and chaining of asynchronous 
-   computations.
- ![img.png](images/img12.png)
  
 ### what is implicit or explicit lock
 - In Java, locks are mechanisms used to manage access to shared resources by multiple threads to prevent race conditions 
