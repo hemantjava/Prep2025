@@ -12,7 +12,7 @@ public class TwoSum {
         int target = 9;
         final var collect = Arrays.stream(nums).boxed().collect(toList());
         System.out.println(Arrays.toString(twoSum(nums, target)));
-        System.out.println(Arrays.toString(findSubArray(nums, target)));
+        System.out.println(Arrays.toString(findSub1(nums, target)));
         System.out.println(findSum(collect, target));
         System.out.println(Arrays.toString(usingStreams(nums, target)));
 
@@ -31,9 +31,9 @@ public class TwoSum {
     }
 
     //Returning values
-    private static int[] findSubArray(int[] array, int target) {
+    private static int[] findSub1(int[] array, int target) {
 
-        Set<Integer> set = new HashSet<>(); // Map is not required if we need values
+        Set<Integer> set = new HashSet<>(); // Map is not required if we need only values
 
         for (int i = 0; i < array.length; i++) {
             if (array[i] == target)

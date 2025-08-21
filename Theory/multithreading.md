@@ -1,34 +1,52 @@
-Executor thread pools commonly used in Java, typically created using static factory methods in the Executors class:-
+### Executor thread pools
+-commonly used in Java, typically created using static factory methods in the Executors class:-
 
-1) FixedThreadPool:
-Description: Creates an ExecutorService with a fixed number of threads. The number of threads remains constant throughout the lifetime of the pool.
-Behavior: If more tasks are submitted than there are threads, the excess tasks are placed in an unbounded queue and wait until a thread becomes available.
-Use Cases: Suitable for applications where you want to limit the maximum number of threads concurrently executing tasks to control resource consumption (e.g., in a server where you don't want to exhaust CPU or memory with too many threads).
+**1) FixedThreadPool:**
+- Description: Creates an ExecutorService with a fixed number of threads. 
+   The number of threads remains constant throughout the lifetime of the pool.
+- Behavior: If more tasks are submitted than there are threads, the excess tasks are placed in an unbounded queue and wait 
+   until a thread becomes available.
+- Use Cases: Suitable for applications where you want to limit the maximum number of threads concurrently executing tasks
+  to control resource consumption (e.g., in a server where you don't want to exhaust CPU or memory with too many threads).
 
-2) CachedThreadPool:
-Description: Creates an ExecutorService that creates new threads as needed to handle incoming tasks. It reuses previously constructed threads when they are available.
-Behavior: If a thread remains idle for a certain period (default 60 seconds), it is terminated and removed from the pool. This pool has no fixed size limit on the number of threads.
-Use Cases: Ideal for applications with many short-lived, asynchronous tasks. It can dynamically adjust the number of threads based on the workload, efficiently handling bursts of requests. However, it can create a very large number of threads if tasks arrive faster than they can be processed, potentially exhausting system resources.
+**2) CachedThreadPool:**
+- Description: Creates an ExecutorService that creates new threads as needed to handle incoming tasks.
+  It reuses previously constructed threads when they are available.
+- Behavior: If a thread remains idle for a certain period (default 60 seconds), 
+  it is terminated and removed from the pool. This pool has no fixed size limit on the number of threads.
+- Use Cases: Ideal for applications with many short-lived, asynchronous tasks.
+  It can dynamically adjust the number of threads based on the workload, efficiently handling bursts of requests.
+  However, it can create a very large number of threads if tasks arrive faster than they can be processed,
+  potentially exhausting system resources.
 
-3) SingleThreadExecutor:
-Description: Creates an ExecutorService that uses a single worker thread to execute tasks.
-Behavior: All tasks are executed sequentially in the order they are submitted. This guarantees that tasks will complete in submission order and that no two tasks will run concurrently.
-Use Cases: Useful when you need to ensure tasks are executed serially, for example, for event processing where order matters or for tasks that modify shared resources that are not thread-safe.
+**3) SingleThreadExecutor:**
+- Description: Creates an ExecutorService that uses a single worker thread to execute tasks.
+- Behavior: All tasks are executed sequentially in the order they are submitted.
+  This guarantees that tasks will complete in submission order and that no two tasks will run concurrently.
+- Use Cases: Useful when you need to ensure tasks are executed serially, for example,
+  for event processing where order matters or for tasks that modify shared resources that are not thread-safe.
 
-4) ScheduledThreadPool:
-Description: Creates an ExecutorService that can schedule tasks to run after a specified delay or at regular intervals. It uses a fixed number of threads for scheduled execution.
-Behavior: Provides methods like schedule(), scheduleAtFixedRate(), and scheduleWithFixedDelay() for timed task execution.
-Use Cases: Perfect for background tasks, recurring jobs, or delayed actions (e.g., sending reminder emails, periodically updating data, triggering alarms).
+**4) ScheduledThreadPool:**
+- Description: Creates an ExecutorService that can schedule tasks to run after a specified delay or at regular intervals.
+  It uses a fixed number of threads for scheduled execution.
+- Behavior: Provides methods like schedule(), scheduleAtFixedRate(), and scheduleWithFixedDelay() for timed task execution.
+- Use Cases: Perfect for background tasks, recurring jobs, or delayed actions (e.g., sending reminder emails,
+  periodically updating data, triggering alarms).
 
-5) WorkStealingPool (Introduced in Java 8):
-Description: Creates a work-stealing thread pool with a target parallelism level. It's based on the ForkJoinPool.
-Behavior: Designed for applications with tasks that might generate other sub-tasks (like recursive algorithms). Threads that finish their own tasks can "steal" tasks from other busy threads, leading to better CPU utilization.
-Use Cases: Suited for highly parallel, divide-and-conquer style algorithms where tasks can be broken down into smaller, independent sub-tasks.
+**5) WorkStealingPool (Introduced in Java 8):**
+- Description: Creates a work-stealing thread pool with a target parallelism level. It's based on the ForkJoinPool.
+- Behavior: Designed for applications with tasks that might generate other sub-tasks (like recursive algorithms).
+  Threads that finish their own tasks can "steal" tasks from other busy threads, leading to better CPU utilization.
+- Use Cases: Suited for highly parallel, divide-and-conquer style algorithms where tasks can be broken down into smaller,
+  independent sub-tasks.
 
-6) VirtualThreadPerTaskExecutor (Introduced in Java 21)
-What it does:
-Creates a new virtual thread for each submitted task: Unlike traditional thread pools (like FixedThreadPool or CachedThreadPool) that reuse a limited number of "platform threads" (OS-managed threads), newVirtualThreadPerTaskExecutor() creates a new virtual thread for every Runnable or Callable task you submit to it.
-Leverages virtual threads: This is the key. Virtual threads are extremely lightweight threads managed by the Java Virtual Machine (JVM), not directly by the operating system
+**6) VirtualThreadPerTaskExecutor (Introduced in Java 21)**
+- What it does:
+   - Creates a new virtual thread for each submitted task: Unlike traditional thread pools (like FixedThreadPool or 
+     CachedThreadPool) that reuse a limited number of "platform threads" (OS-managed threads), newVirtualThreadPerTaskExecutor()
+     creates a new virtual thread for every Runnable or Callable task you submit to it.
+   - Leverages virtual threads: This is the key. Virtual threads are extremely lightweight threads managed by the 
+     Java Virtual Machine (JVM), not directly by the operating system
 
 ### What are differences between submit() and execute() methods in ExecutorService?
 -> submit() and execute().
@@ -74,15 +92,18 @@ CountDownLatch is used to synchronize one or more threads by waiting for them to
     CountDownLatch takes a single argument that represents the number of events that need to occur before the latch is released.
 
 ### Difference between Future and CompletableFuture?
- -> a CompletableFuture is an extension of Future that allows for more advanced composition and chaining of asynchronous computations.
+ - a CompletableFuture is an extension of Future that allows for more advanced composition and chaining of asynchronous 
+   computations.
  ![img.png](images/img12.png)
  
 ### what is implicit or explicit lock
-In Java, locks are mechanisms used to manage access to shared resources by multiple threads to prevent race conditions and ensure thread safety. Locks can be either explicit or implicit, and here's the difference:
+- In Java, locks are mechanisms used to manage access to shared resources by multiple threads to prevent race conditions 
+and ensure thread safety. Locks can be either explicit or implicit, and here's the difference:
 
 Implicit Lock (or Monitor Lock)
 
-* Definition: Implicit locks are those that are automatically acquired by the JVM when a thread enters a synchronized block or method.
+* Definition: Implicit locks are those that are automatically acquired by the JVM when a thread enters a synchronized 
+  block or method.
 * Usage: When you use the synchronized keyword, the lock is implicitly acquired on the object used in the synchronization.
 ```java
 public class SynchronizedLock{
@@ -100,11 +121,14 @@ synchronized(this) {
 }
 }
 ```
-* Lock Release: The lock is automatically released when the synchronized block or method exits, either normally or due to an exception.
+* Lock Release: The lock is automatically released when the synchronized block or method exits, 
+  either normally or due to an exception.
 
-Explicit Lock
-* Definition: Explicit locks are those that the developer manually acquires and releases using the Lock interface from the java.util.concurrent.locks package.
-* Usage: You have more control over the locking mechanism, including the ability to try acquiring the lock without blocking or with a timeout.
+**Explicit Lock**
+* Definition: Explicit locks are those that the developer manually acquires and releases using the **Lock interface** 
+  from the java.util.concurrent.locks package.
+* Usage: You have more control over the locking mechanism, including the ability to try acquiring the lock without blocking 
+  or with a timeout.
 
 ```java
 import java.util.concurrent.locks.Lock;
@@ -129,12 +153,14 @@ private final Lock lock = new ReentrantLock();
 
 ### Key Differences:
 1. Control: Explicit locks give more control over locking, while implicit locks are managed by the JVM.
-2. Reentrancy: Both synchronized (implicit locks) and ReentrantLock (explicit locks) are reentrant, meaning a thread can acquire the same lock multiple times without deadlocking itself.
+2. Reentrancy: Both synchronized (implicit locks) and ReentrantLock (explicit locks) are reentrant, 
+   meaning a thread can acquire the same lock multiple times without deadlocking itself.
 3. Timeouts: Explicit locks can be used with timeouts, whereas implicit locks cannot.
 
 ### Race condition 
- Occurs when two or more threads access shared data and try to change it at the same time. Since thread scheduling can lead to unpredictable thread execution order, 
- the final outcome depends on the specific sequence of thread execution, which can lead to unexpected and incorrect behavior.
+- Occurs when two or more threads access shared data and try to change it at the same time. Since thread scheduling can
+  lead to unpredictable thread execution order, the final outcome depends on the specific sequence of thread execution,
+  which can lead to unexpected and incorrect behavior.
 
 ### Difference between concurrency and parallelism in a Java (and general computing) context:
 * 1. Concurrency
@@ -143,14 +169,16 @@ private final Lock lock = new ReentrantLock();
   * Managed by threads scheduled by the JVM/OS.
   * May run on a single CPU core by switching quickly between tasks.
   * Example ExecutorService can run multiple tasks concurrently even on one core.
+* 2. Parallelism
+    * Parallelism is about actually executing multiple tasks at the same instant.
+    * Requires multiple CPU cores or processors.
+    * Threads run truly simultaneously on different CPU cores.
+    * Example Using ForkJoinPool or parallel streams (.parallelStream()),split the tasks and run in parallel threads on
+      multiple cores.
+
 ![img_3.png](..%2Fimages%2Fmulti-threading%2Fimg_3.png)
 ![img_4.png](..%2Fimages%2Fmulti-threading%2Fimg_4.png)
   
-* 2. Parallelism
-  * Parallelism is about actually executing multiple tasks at the same instant.
-  * Requires multiple CPU cores or processors.
-  * Threads run truly simultaneously on different CPU cores.
-  * Example Using ForkJoinPool or parallel streams (.parallelStream()),split the tasks and run in parallel threads on multiple cores.
 
 ## Difference Platform Thread (Traditional Java Thread) VS Virtual Thread (Java 19+ – Project Loom)
 
@@ -204,3 +232,124 @@ private final Lock lock = new ReentrantLock();
 ThreadLocal.withInitial(()->0);
 new ThreadLocal();
 ```
+### ThreadLocal vs volatile
+- are often confused, but they solve very different concurrency problems
+  **1️⃣ volatile**
+👉 Purpose: Ensures visibility of changes to a variable across multiple threads.
+- Each thread normally has a local CPU cache. Without volatile, one thread’s update might not be visible to others immediately.
+- volatile guarantees that read/write goes directly to main memory.
+  **Key points:**
+- One shared copy of the variable across all threads.
+- No atomicity (only visibility). For compound operations (count++), you still need synchronization.
+- Lightweight compared to synchronized.
+  **2️⃣ ThreadLocal**
+👉 Purpose: Provides thread-local storage, i.e., each thread has its own copy of a variable.
+- Useful when you don’t want threads to share state.
+- Value is isolated to each thread → no synchronization needed.
+- Commonly used for things like request context, DB connections
+  **3️⃣ Atomic Variables (Atomicity)**
+- Purpose: Provide atomic (indivisible) operations on shared variables.
+- Use classes like AtomicInteger, AtomicBoolean, AtomicReference.
+- Guarantee visibility + atomicity (safe increments, compare-and-swap).
+- ![img_5.png](../images/multi-threading/img_5.png)
+  **✅ In short:**
+- Use volatile for visibility of flags/single values.
+- Use ThreadLocal for per-thread data isolation.
+- Use Atomic for lock-free thread-safe updates on shared variables.
+## Semaphore, CountDownLatch, CyclicBarrier are core concurrency utilities in Java, but they solve different problems
+### 1️⃣ Semaphore
+- Used to control access to a resource with a fixed number of permits (like limited parking slots).
+- Methods acquire() and release  
+- Example: 2 permits (2 threads can enter at a time)
+```java
+import java.util.concurrent.Semaphore;
+
+public class SemaphoreExample {
+    private static final Semaphore semaphore = new Semaphore(2); // 2 permits
+
+    public static void main(String[] args) {
+        for (int i = 1; i <= 5; i++) {
+            int threadId = i;
+            new Thread(() -> {
+                try {
+                    semaphore.acquire(); // get permit
+                    System.out.println("Thread " + threadId + " acquired permit");
+                    Thread.sleep(1000); // simulate work
+                    System.out.println("Thread " + threadId + " releasing permit");
+                    semaphore.release(); // release permit
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }).start();
+        }
+    }
+}
+
+```
+### 2️⃣ CountDownLatch
+👉 Used to make one/more threads wait until a set of operations complete.
+- Once count reaches 0, all waiting threads are released.
+- Cannot be reused.
+- Example: Wait for 3 workers to finish before proceeding
+```java
+import java.util.concurrent.CountDownLatch;
+
+public class CountDownLatchExample {
+    private static final CountDownLatch latch = new CountDownLatch(3);
+
+    public static void main(String[] args) throws InterruptedException {
+        // Worker threads
+        for (int i = 1; i <= 3; i++) {
+            int workerId = i;
+            new Thread(() -> {
+                try {
+                    System.out.println("Worker " + workerId + " started work");
+                    Thread.sleep(1000 * workerId);
+                    System.out.println("Worker " + workerId + " finished");
+                    latch.countDown(); // reduce latch
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }).start();
+        }
+
+        // Main thread waits
+        System.out.println("Main thread waiting...");
+        latch.await(); // wait until count reaches 0
+        System.out.println("All workers finished. Main thread continues...");
+    }
+}
+
+```
+###  3️⃣ CyclicBarrier
+- Used to make threads wait for each other at a common barrier point before continuing.
+- Reusable (barrier resets automatically).
+```java
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
+public class CyclicBarrierExample {
+    private static final CyclicBarrier barrier = new CyclicBarrier(3, 
+        () -> System.out.println("All parties arrived at barrier, let's proceed!")
+    );
+
+    public static void main(String[] args) {
+        for (int i = 1; i <= 3; i++) {
+            int threadId = i;
+            new Thread(() -> {
+                try {
+                    System.out.println("Thread " + threadId + " working...");
+                    Thread.sleep(1000 * threadId);
+                    System.out.println("Thread " + threadId + " waiting at barrier");
+                    barrier.await(); // wait for others
+                    System.out.println("Thread " + threadId + " passed barrier");
+                } catch (InterruptedException | BrokenBarrierException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }).start();
+        }
+    }
+}
+
+```
+![img_6.png](../images/multi-threading/img_6.png)

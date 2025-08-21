@@ -26,20 +26,6 @@ public class ShiftZeroToEnd {
         }
     }
 
-    private static void shiftZeroToEnd1(int[] arr) {
-        int writeIndex = 0;
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != 0) {
-                if (arr[writeIndex] == 0) {
-                    int temp = arr[writeIndex];
-                    arr[writeIndex] = arr[i];
-                    arr[i] = temp;
-
-                }
-                writeIndex++;
-            }
-        }
-    }
 
     private static void shiftZeroToStart(int[] arr) {
         int writeIndex = arr.length - 1;

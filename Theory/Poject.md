@@ -1,4 +1,7 @@
-
+# Tell me something about your self
+"My name is Hemant Kumar Sahu, and I am currently working as a Technical Lead with over 8 years of experience in designing,
+developing, and leading Java-based applications. I specialize in Java 8/11/17, Spring Boot, Microservices, Kafka, AWS Cloud,
+and containerization with Docker and Kubernetes environments
 # Project: Text Extraction Service (TES) – Healthcare Domain
 ->
 TES is an OCR-based microservice that extracts structured information from scanned PDF documents (Test Requisition Forms
@@ -19,8 +22,8 @@ SFDC: listens to the outbound queue and displays the data in the Salesforce port
 AUDIT: logs and tracks processing activities.
 
 Purpose:
-To collect structured data from blood cancer patients’, store it in a data lake, and support analytics for
-early-stage cancer detection and research.
+To collect structured data from blood cancer patients, store it in a data lake, and support analytics for
+early-stage cancer symptoms detection and research.
 
 Key Tech:
 Java, Spring Boot, Amazon S3, Amazon Textract, SQS/SNS (event queues), Microservices.

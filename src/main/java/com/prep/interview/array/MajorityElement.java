@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class MajorityElement {
     public static void main(String[] args) {
-        int[] nums = {2,2,1,1,1,2,2};
+        int[] nums = {2, 2, 1, 1, 1, 2, 2};
         System.out.println(majorityElement(nums));
         System.out.println(majorityElement1(nums));
         System.out.println(majorityElement2(nums));
@@ -16,7 +16,7 @@ public class MajorityElement {
     public static int majorityElement(int[] nums) {
         Arrays.sort(nums); //[2,2,2,2,1,1,1]
         int n = nums.length; // 7
-        return nums[n/2];//index = 3 , rs = 3
+        return nums[n / 2];//index = 3 , rs = 3
     }
 
     public static int majorityElement1(int[] nums) {
@@ -38,13 +38,14 @@ public class MajorityElement {
     }
 
     //The time complexity of the Moore's Voting Algorithm is O(n) since it traverses the array once.
+    // Note: it will work if only 2 candidates not more
     public static int majorityElement2(int[] nums) {
         int count = 0; // more count candidate has majority
         int candidate = 0;
 
         for (int num : nums) {
             if (count == 0) {
-                candidate = num;
+                candidate = num; //count reached '0' candidate updated
             }
 
             if (num == candidate) {

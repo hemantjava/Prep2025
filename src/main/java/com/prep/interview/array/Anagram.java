@@ -7,8 +7,8 @@ import java.util.Map;
 public class Anagram {
     public static void main(String[] args) {
         System.out.println(isValidAnagram("anagram", "mnagraa"));
-        System.out.println(isValidAnagram1("anagRam", "mnagRaa"));
-        System.out.println(isValidAnagram2("anagrAM", "MnAgraa"));
+        System.out.println(isAnagram("anagram", "mnagraa"));
+       System.out.println(isAnagramMap("anagrAM", "MnAgraa"));
         System.out.println('A'- 'a');
     }
 
@@ -25,52 +25,44 @@ public class Anagram {
     }
 
     //preferred one
-    private static boolean isValidAnagram1(String s, String t) {
-        if (s.length() != t.length())
-            return false;
-        char[] fre = new char[26];
 
-        for (char c : s.toLowerCase().toCharArray()) {
-            int i = c - 'a';
-            fre[i]++;
+    public static boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) return false;
+
+        int[] count = new int[26]; // for lowercase a-z  (0-25)
+
+        for (int i = 0; i < s.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+            count[t.charAt(i) - 'a']--;
         }
 
-        for (char c : t.toLowerCase().toCharArray()) {
-            if (fre[c - 'a'] == 0)
-                return false;
-            fre[c - 'a']--;
+        for (int val : count) {
+            if (val != 0) return false;
         }
-
         return true;
     }
-    private static boolean isValidAnagram2(String str1, String str2) {
-        // Remove any whitespace and convert strings to lowercase
-        str1 = str1.replaceAll("\\s", "").toLowerCase();
-        str2 = str2.replaceAll("\\s", "").toLowerCase();
 
-        // If the lengths are not the same, they can't be anagrams
-        if (str1.length() != str2.length()) {
-            return false;
+    public static boolean isAnagramMap(String s, String t) {
+        if (s.length() != t.length()) return false;
+
+        Map<Character, Integer> map = new HashMap<>();
+
+        // Count frequency of chars in s
+        for (char c : s.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
         }
 
-        // Create a single map to track character counts
-        Map<Character, Integer> charCountMap = new HashMap<>();
-
-        // Increment the count for each character in the first string
-        for (char c : str1.toCharArray()) {
-            charCountMap.put(c, charCountMap.getOrDefault(c, 0) + 1);
-        }
-
-        // Decrement the count for each character in the second string
-        for (char c : str2.toCharArray()) {
-            int count = charCountMap.getOrDefault(c, 0);//char if not exist then return 0
-            if (count == 0) {
-                return false; // Character not found in str1
+        // Subtract frequency using t
+        for (char c : t.toCharArray()) {
+            if (!map.containsKey(c)) {
+                return false; // char not in s
             }
-            charCountMap.put(c, count - 1);//update map
+            map.put(c, map.get(c) - 1);
+            if (map.get(c) == 0) {
+                map.remove(c); // clean up
+            }
         }
 
-        return true; // All counts are zero, so strings are anagrams
-
+        return map.isEmpty(); // all balanced
     }
 }

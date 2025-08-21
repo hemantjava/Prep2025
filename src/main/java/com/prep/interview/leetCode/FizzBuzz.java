@@ -6,12 +6,12 @@ import java.util.stream.IntStream;
 
 public class FizzBuzz{ //LeetCode-4412
     public static void main(String[] args) {
-
+        System.out.println(fizzBuzz(3));
     }
 
     private static List<String> fizzBuzz(int x){
         List<String> list = new ArrayList<>();
-        for (int i = 0; i <=x ; i++) {
+        for (int i = 1; i <=x ; i++) {
             if (i%3==0 && i%5==0){
                 list.add("FizzBuzz");
             }else if (i%3==0){
@@ -25,4 +25,5 @@ public class FizzBuzz{ //LeetCode-4412
         }
         return list;
     }
+
 }

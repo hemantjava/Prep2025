@@ -95,8 +95,10 @@ Introduced to simplify architecture.
 ![img_1.png](..%2Fimages%2Fkafka%2Fimg_1.png)
 ![img_2.png](..%2Fimages%2Fkafka%2Fimg_2.png)
 
-**Q Mention what is the benefits of Apache Kafka over the traditional technique?**
+- **Q Mention what is the benefits of Apache Kafka over the traditional technique?**
 Fast: A single Kafka broker can serve thousands of clients by handling megabytes of reads and writes per second
 Scalable: Data are partitioned and streamlined over a cluster of machines to enable larger data
 Durable: Messages are persistent and is replicated within the cluster to prevent data loss
 Distributed by Design: It provides fault tolerance guarantees and durability
+-  ** Data transaction supported by kafka **
+   Real-world → You typically use serializers/deserializers for String, JSON, Avro, Protobuf, custom objects.
