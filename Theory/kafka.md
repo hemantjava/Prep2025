@@ -100,5 +100,25 @@ Fast: A single Kafka broker can serve thousands of clients by handling megabytes
 Scalable: Data are partitioned and streamlined over a cluster of machines to enable larger data
 Durable: Messages are persistent and is replicated within the cluster to prevent data loss
 Distributed by Design: It provides fault tolerance guarantees and durability
--  ** Data transaction supported by kafka **
+-  **Data transaction supported by kafka**
    Real-world → You typically use serializers/deserializers for String, JSON, Avro, Protobuf, custom objects.
+
+### Problem Breakdown
+100 Producers → 1 Consumer
+- Producers are producing data very fast.
+- Single consumer is slow → messages are piling up in Kafka → consumer lag increases → high latency.
+- Kafka is horizontally scalable, but if you consume with only 1 consumer, you’re not leveraging parallelism.
+
+- ✅ Kafka Concepts to Address This
+
+- **Partitions & Parallelism**
+- A Kafka topic is divided into partitions.
+- Each consumer in a consumer group can read from different partitions in parallel.
+- If you have only 1 consumer, it can only consume partitions assigned to it sequentially.
+- Solution → Increase partitions and add more consumers in the group.
+- 🔹 Example:
+- Topic: orders with 10 partitions.
+- Consumer group: order-processing-group with 5 consumers.
+- Kafka will assign partitions across consumers → they work in parallel → higher throughput.
+![img_3.png](../images/kafka/img_3.png)
+![img_4.png](../images/kafka/img_4.png)
