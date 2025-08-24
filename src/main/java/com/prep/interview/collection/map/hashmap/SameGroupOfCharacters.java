@@ -1,6 +1,7 @@
 package com.prep.interview.collection.map.hashmap;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /*
        EXPECTED OUTPUT:
@@ -33,13 +34,11 @@ public class SameGroupOfCharacters {
         for (String str : input) {
             char[] ch = str.toCharArray();
             Arrays.sort(ch);
-            String sortString = String.valueOf(ch);
-            if (map.containsKey(sortString)) {
-                map.get(sortString).add(str);
-            } else {
-                map.put(sortString, new ArrayList<>());
-                map.get(sortString).add(str);
+            String sortString = String.valueOf(ch);//Array to string
+            if (!map.containsKey(sortString)) {
+                map.put(sortString, new ArrayList<>()); // for new entry
             }
+            map.get(sortString).add(str);
         }
         return map.values();
     }
