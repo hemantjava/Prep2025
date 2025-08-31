@@ -54,7 +54,7 @@ Phantom References: Used for post-mortem cleanup; requires explicit reference qu
 
 default Garbage Collector (GC) used across major Java versions:
 •	Java 8 → Parallel GC (a throughput-oriented collector).
-•	Java 11 → G1 GC (became the default to reduce pause times).
+•	Java 11 → G1 GC (Garbage First, became the default to reduce pause times).
 •	Java 17 → G1 GC (still the default, with improvements).
 •	Java 21 → G1 GC (default, but ZGC and Shenandoah are fully production-ready and highly tuned for low latency).
 👉 You can still choose others (-XX:+UseParallelGC, -XX:+UseZGC, -XX:+UseShenandoahGC, etc.) depending on needs.
@@ -72,6 +72,14 @@ default Garbage Collector (GC) used across major Java versions:
 •	Use Parallel GC → If throughput matters most (batch/ETL jobs).
 •	Use G1 (default) → If balanced throughput & latency is fine (most enterprise apps).
 •	Use ZGC/Shenandoah → If low latency is critical (financial, trading, gaming, real-time apps).
+
+| **GC**          | **Default Version**                      | **Pause Time**                             | **Throughput** | **Memory Usage**           | **Use Case / Pros**                                                | **Cons / Limitations**                                   |
+| --------------- | ---------------------------------------- | ------------------------------------------ | -------------- | -------------------------- | ------------------------------------------------------------------ | -------------------------------------------------------- |
+| **Parallel GC** | Java 8 default                           | High (stop-the-world)                      | Very high      | Moderate                   | Best for **batch jobs** where throughput matters more than latency | Long pause times; bad for low-latency apps               |
+| **G1 GC**       | Default since Java 9, incl. 17 & 21      | Low-to-medium                              | High           | Moderate                   | Balances **pause time & throughput**, region-based                 | More tuning needed for very large heaps                  |
+| **ZGC**         | Available since Java 11; stable in 15+   | Ultra-low (<10ms, regardless of heap size) | High           | Higher (metadata overhead) | Designed for **low-latency apps**, supports **multi-TB heaps**     | Slightly higher CPU usage; newer compared to G1          |
+| **Shenandoah**  | Production-ready in 12+, improved in 17+ | Very low (<10ms)                           | High           | Higher                     | **Concurrent compaction**, low-pause for large heaps               | Not bundled in Oracle JDK (only OpenJDK / RedHat builds) |
+| **Serial GC**   | Not default; small heaps                 | High                                       | Low            | Low                        | Simple, good for **small apps / embedded systems**                 | Terrible for large heaps, long pauses                    |
 
 ### Latency vs throughput
 - In Computing (Networks, Systems, APIs, Databases)

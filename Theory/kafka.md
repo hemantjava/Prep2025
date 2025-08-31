@@ -418,3 +418,6 @@ public class ProcessedOrderConsumer {
 * **Rebalancing safety**
 
 ---
+## Note scaling
+If consumer lag > 1000, Kubernetes adds more consumer pods.
+Kafka automatically rebalances partitions across consumers.
