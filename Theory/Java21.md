@@ -52,23 +52,7 @@ default       -> "unknown";
 }
 
 ```
-### 5. String Templates (Preview – JEP 430)
-* Interpolation like in JS/Scala.
-```java
-String name = "Hemant";
-String msg = STR."Hello, \{name}!";
-System.out.println(msg); // Hello, Hemant!
-```
 
-### 6. Scoped Values (Preview – JEP 446)
-* Immutable, thread-local replacement for ThreadLocal.
-* Safer for sharing data across virtual threads.
-
-```java
-ScopedValue<String> USER = ScopedValue.newInstance();
-ScopedValue.where(USER, "Hemant")
-.run(() -> System.out.println(USER.get()));
-```
 
 ### 7. Unnamed Classes & Instance Main Methods (Preview – JEP 445)
 * Simplifies writing small Java programs.
@@ -77,7 +61,6 @@ ScopedValue.where(USER, "Hemant")
 void main() {
 System.out.println("Hello, World!");
 }
-
 ```
 ### 8. Foreign Function & Memory API (Finalized – JEP 442)
 * Interop with native code (C libraries).
@@ -93,4 +76,105 @@ System.out.println("Hello, World!");
 ### ✅ Summary:
 Java 21 makes concurrency (virtual threads, scoped values) easier, language syntax (patterns, templates, unnamed classes) 
 cleaner, and performance/security stronger (ZGC, FFM, KEM).
-dCollection, SequencedSet, SequencedMap) that provide consistent 
+SequencedCollection, SequencedSet, SequencedMap) that provide consistent
+Good question 👍 — let’s break it down properly.
+
+In **Java 21**, three new interfaces were introduced / enhanced in the collections framework:
+
+* **`SequencedCollection<E>`**
+* **`SequencedSet<E>`**
+* **`SequencedMap<K,V>`**
+
+They bring **first/last/reversed ordering APIs** that were missing before.
+
+---
+
+# 🔹 1. `SequencedCollection<E>`
+
+Implemented by: `List`, `Deque`, `LinkedHashSet` (since it’s also a set of ordered elements).
+
+### **New methods in Java 21**:
+
+```java
+E getFirst();
+E getLast();
+
+E removeFirst();   // throws exception if empty
+E removeLast();    // throws exception if empty
+
+E pollFirst();     // returns null if empty
+E pollLast();      // returns null if empty
+
+void addFirst(E e);
+void addLast(E e);
+
+SequencedCollection<E> reversed();
+```
+
+---
+
+# 🔹 2. `SequencedSet<E>`
+
+Extends both **`Set<E>`** and **`SequencedCollection<E>`**.
+Implemented by: `LinkedHashSet`, `SortedSet` (TreeSet).
+
+### **Methods available** (inherits all from `SequencedCollection`):
+
+```java
+E getFirst();
+E getLast();
+
+E removeFirst();
+E removeLast();
+
+E pollFirst();
+E pollLast();
+
+void addFirst(E e);
+void addLast(E e);
+
+SequencedSet<E> reversed();
+```
+
+⚡ Difference: Ensures **uniqueness** (like a Set), while keeping order.
+
+---
+
+# 🔹 3. `SequencedMap<K,V>`
+
+Implemented by: `LinkedHashMap`, `SortedMap` (TreeMap).
+
+### **New methods in Java 21**:
+
+```java
+Map.Entry<K,V> firstEntry();
+Map.Entry<K,V> lastEntry();
+
+Map.Entry<K,V> pollFirstEntry();
+Map.Entry<K,V> pollLastEntry();
+
+V putFirst(K key, V value);
+V putLast(K key, V value);
+
+SequencedMap<K,V> reversed();
+```
+
+---
+
+# 📌 Summary Table
+
+| Interface               | First/Last Access      | Poll/Remove          | Add First/Last     | Reversed View | Uniqueness           | Key-Value   |
+| ----------------------- | ---------------------- | -------------------- | ------------------ | ------------- | -------------------- | ----------- |
+| **SequencedCollection** | ✅ getFirst/getLast     | ✅ poll/remove        | ✅ addFirst/addLast | ✅ reversed    | ❌ duplicates allowed | ❌           |
+| **SequencedSet**        | ✅                      | ✅                    | ✅                  | ✅             | ✅ unique elements    | ❌           |
+| **SequencedMap**        | ✅ firstEntry/lastEntry | ✅ pollFirst/pollLast | ✅ putFirst/putLast | ✅ reversed    | ✅ unique keys        | ✅ key-value |
+
+---
+
+👉 So, practically:
+
+* Use **`SequencedCollection`** when you need ordered list-like behavior (playlists, queues).
+* Use **`SequencedSet`** when you need **unique ordered elements** (workflows, history).
+* Use **`SequencedMap`** when you need **ordered key-value pairs** (caches, registries).
+
+---

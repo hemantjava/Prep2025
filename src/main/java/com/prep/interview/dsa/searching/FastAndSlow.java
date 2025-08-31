@@ -3,7 +3,7 @@ package com.prep.interview.dsa.searching;
 public class FastAndSlow {
     //To finding middle elements
     public static void main(String[] args) {
-        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9};//
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8};//
         System.out.println(fastAndSlow(arr));//5
         System.out.println(arr[fastAndSlow(arr)]);//6
     }

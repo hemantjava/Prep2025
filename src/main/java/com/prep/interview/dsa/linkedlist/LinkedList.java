@@ -72,7 +72,7 @@ public class LinkedList<T> {
             return;
         }
         newNode.next = head;
-        head = newNode; //  new node become head
+        head = newNode; //  new node becomes head
         length++;
     }
 
@@ -140,8 +140,8 @@ public class LinkedList<T> {
     }
 
     void reverse() {
-        Node<T> previous = null;
         Node<T> current = head;
+        Node<T> previous = null;
         Node<T> next = null;
 
         while (current != null) {
@@ -181,5 +181,16 @@ public class LinkedList<T> {
         }
         return -1;
     }
+    public T findMiddleNode(){
+        Node<T> temp = head;
+        Node<T> slow = temp;
+        Node<T> fast = temp;
+        while (fast !=null && fast.next !=null){
+             slow = slow.next;
+             fast = fast.next.next;
+        }
+        return slow.data;
+    }
+
 
 }

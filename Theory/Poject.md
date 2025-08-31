@@ -1,7 +1,8 @@
 # Tell me something about your self
 "My name is Hemant Kumar Sahu, over 8 years of experience in designing, developing, and leading Java-based applications.
-I specialize in Java 8/11/17,21, Spring Boot, Microservices, Kafka, AWS Cloud,
-and containerization with Docker and Kubernetes environments
+I specialize in Java 8/11/17,21, Spring Boot, Microservices my current designation was technical lead and i worked as 
+an individual contributor at encora.
+
 # Project: Text Extraction Service (TES) – Healthcare Domain
 ->
 TES is an OCR-based microservice that extracts structured information from scanned PDF documents (Test Requisition Forms

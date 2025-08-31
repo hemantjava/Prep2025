@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutionException;
 
 public class CompletableFutureExceptionHandling {
 
-    public static void main(String[] args) {
+     static void main(String[] args) {
         exceptionally();
         System.out.println("----------------------------------------------------");
         handle();

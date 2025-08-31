@@ -313,3 +313,6 @@ Collection is an interface.
 Which can be used to represent a group of individual objects as a single entity.
 Collections are a utility class present in util package. to define several utility methods (like sorting, searching)
 for collection object.
+
+### Custom annotation
+![img_4.png](../images/core%20java/img_4.png)

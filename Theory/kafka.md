@@ -122,3 +122,299 @@ Distributed by Design: It provides fault tolerance guarantees and durability
 - Kafka will assign partitions across consumers → they work in parallel → higher throughput.
 ![img_3.png](../images/kafka/img_3.png)
 ![img_4.png](../images/kafka/img_4.png)
+
+### Idempotence
+- Making Kafka idempotent means ensuring that a message is processed exactly once (no duplicates, no missed events), 
+even if retries or failures occur.
+  Perfect 👌 since you’re on **Kafka > 2.9** (which supports **idempotent producers and transactions out-of-the-box**), let’s do a **Spring Boot example** that ensures **exactly-once processing**.
+
+We’ll cover:
+
+1. Producer config (**idempotent + transactional**)
+2. Consumer config (**read\_committed**)
+3. Spring Boot Kafka template usage
+
+---
+
+## 1. **Producer Config (Spring Boot)**
+
+In `application.yml`:
+
+```yaml
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    producer:
+      acks: all
+      retries: 2147483647
+      enable-idempotence: true
+      max-in-flight-requests-per-connection: 5
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        transactional.id: tx-producer-1  # required for transactions
+
+    consumer:
+      group-id: my-consumer-group
+      enable-auto-commit: false
+      isolation-level: read_committed   # ignores aborted transactions
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+```
+
+---
+
+## 2. **Transactional Producer (Java)**
+
+```java
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class OrderProducer {
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    public OrderProducer(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+    @Transactional("kafkaTransactionManager")
+    public void sendOrder(String orderId, String payload) {
+        kafkaTemplate.executeInTransaction(operations -> {
+            operations.send("orders", orderId, payload);
+            operations.send("audit-log", orderId, "AUDIT_" + payload);
+            return true;
+        });
+    }
+}
+```
+
+👉 Here, if **any send fails**, the transaction is **aborted** and consumers won’t see partial results.
+
+---
+
+## 3. **Consumer (Exactly-Once with Deduplication)**
+
+```java
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderConsumer {
+
+    @KafkaListener(topics = "orders", groupId = "order-service")
+    public void consume(ConsumerRecord<String, String> record) {
+        String orderId = record.key();
+        String payload = record.value();
+
+        // Example: Idempotent processing using UPSERT
+        System.out.println("Processing order: " + orderId + " -> " + payload);
+
+        // e.g., write to DB with UPSERT by orderId (ensures no duplicates)
+    }
+}
+```
+
+---
+
+## 4. **Enable Kafka Transactions in Spring**
+
+Add to your config class:
+
+```java
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.*;
+import org.springframework.kafka.transaction.KafkaTransactionManager;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Configuration
+public class KafkaConfig {
+
+    @Bean
+    public ProducerFactory<String, String> producerFactory() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        config.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+        config.put(ProducerConfig.ACKS_CONFIG, "all");
+        config.put(ProducerConfig.RETRIES_CONFIG, Integer.MAX_VALUE);
+        config.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 5);
+        config.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "tx-producer-1");
+        return new DefaultKafkaProducerFactory<>(config);
+    }
+
+    @Bean
+    public KafkaTemplate<String, String> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory());
+    }
+
+    @Bean
+    public KafkaTransactionManager<String, String> kafkaTransactionManager() {
+        return new KafkaTransactionManager<>(producerFactory());
+    }
+}
+```
+
+---
+
+✅ **What this gives you:**
+
+* **Idempotent producer** → No duplicate messages due to retries.
+* **Transactions** → No partial writes (all-or-nothing).
+* **Consumers (read\_committed)** → Only see committed messages.
+* **Idempotent consumer logic** → Prevents duplicate side effects in DB.
+
+---
+- Kafka Streams (EOS)
+If you use Kafka Streams, you get EOS automatically by setting:
+```yaml
+processing:
+  guarantee: exactly_once_v2 
+```
+Got it 👍 — you’re asking about **Kafka Streams with Spring Boot** (which is different from plain Kafka producers/consumers).
+
+With **Kafka Streams** you get **end-to-end exactly-once semantics (EOS)** just by configuring
+
+```properties
+processing.guarantee=exactly_once_v2
+```
+
+Let me show you a **Spring Boot Kafka Streams example** where:
+
+* We read from `orders` topic
+* Do a transformation (e.g., uppercase payload)
+* Write results to `processed-orders` topic
+* Use **EOS (idempotent + transactional)**
+
+---
+
+## 1. **Maven Dependency**
+
+Add to `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.springframework.kafka</groupId>
+    <artifactId>spring-kafka</artifactId>
+</dependency>
+
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-streams</artifactId>
+</dependency>
+```
+
+---
+
+## 2. **application.yml**
+
+```yaml
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    streams:
+      application-id: order-streams-app
+      properties:
+        processing.guarantee: exactly_once_v2   # EOS
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+```
+
+---
+
+## 3. **Kafka Streams Topology Bean**
+
+```java
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.KStream;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class OrderStreamProcessor {
+
+    @Bean
+    public KStream<String, String> kStream(StreamsBuilder streamsBuilder) {
+        KStream<String, String> ordersStream = streamsBuilder.stream("orders");
+
+        ordersStream
+                .mapValues(value -> value.toUpperCase())  // transformation
+                .to("processed-orders");
+
+        return ordersStream;
+    }
+}
+```
+
+---
+
+## 4. **Producer for Test**
+
+You can still use `KafkaTemplate` to publish messages:
+
+```java
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderProducer {
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    public OrderProducer(KafkaTemplate<String, String> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
+
+    public void sendOrder(String orderId, String payload) {
+        kafkaTemplate.send("orders", orderId, payload);
+    }
+}
+```
+
+---
+
+## 5. **Consumer for Processed Data**
+
+```java
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ProcessedOrderConsumer {
+
+    @KafkaListener(topics = "processed-orders", groupId = "processed-order-service")
+    public void consume(String message) {
+        System.out.println("✅ Processed Order: " + message);
+    }
+}
+```
+
+---
+
+## ✅ What This Example Achieves
+
+* **Input** → `orders` topic
+* **Kafka Streams** → Transforms messages (uppercase) with **EOS (`exactly_once_v2`)**
+* **Output** → `processed-orders` topic
+* **Consumer** → Reads only committed results (no duplicates, no partial failures)
+
+---
+
+👉 Kafka Streams automatically handles:
+
+* **Idempotent producer**
+* **Transactional writes**
+* **Read\_committed consumer mode**
+* **Rebalancing safety**
+
+---
