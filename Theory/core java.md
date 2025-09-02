@@ -1,39 +1,182 @@
 1). What is OOPS ? 
-->oops is an Object-Oriented Programming System Language
+-> 👉 Definition:
+Object-Oriented Programming is a programming methodology that organizes software design around objects rather than
+functions and logic. It focuses on encapsulation, inheritance, polymorphism, and abstraction to make code more reusable,
+maintainable, and scalable.
 *) There are 4 Pillars of OOPs:-
 
-a)Abstraction 
-=> Abstraction is a process of hides/hiding the implementation details
-from users. We can achieve this       
-functionality by using interface and the abstract class.
+The **4 Pillars of OOP (Object-Oriented Programming)** in Java are:
 
-b)Encapsulation 
-=> Encapsulation is a process of wraps (binds) data and code into a single unit. like a setter getter
-method in a single unit ex: Pojo class and DTO class
-> Tightly encapsulated class = Each and every class variable data is declared private that is tightly encapsulated.
+1. **Encapsulation**
+2. **Abstraction**
+3. **Inheritance**
+4. **Polymorphism**
 
-c)Inheritance 
-=> > It is important part of OOPs, when Child class inherits the all properties and behaviour from parent
-class.
-> Inheritance also known as "IS-A Relationship."
-> By using "extends" keyword we can implement "IS-A Relationship" or inheritance.
+Let’s understand each with **real-time examples** in Java 👇
 
-Advantage - > Inheritance increases the "code re-usability".
+---
 
-Types > 1). Single Inheritance, 2). Multiple Inheritance not support., 3). Multilevel Inheritance, 4).Hierarchical
-Inheritance, 5). Hybrid- Inheritance Not supported because multiple inheritance is not supported.
+### 1. **Encapsulation** (Data hiding with getters/setters)
 
-d)Polymorphism 
-=> same(one) name multiple(different) form. its two types:- 
-d.1)Compile-time polymorphism/static binding(method overloading) 
-->  Means "methods name are same but arguments are different" in same class.
-d.2)Runtime/Dynamic Binding (method overriding) method signature are same but parent to child class
+* Wrapping data (fields) and methods (logic) inside a class.
+* Example: A `BankAccount` class hides balance details and exposes only safe methods.
+
+```java
+class BankAccount {
+    private double balance; // hidden data
+
+    public BankAccount(double balance) {
+        this.balance = balance;
+    }
+
+    // controlled access
+    public void deposit(double amount) {
+        if (amount > 0) balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) balance -= amount;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+public class EncapsulationExample {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount(1000);
+        account.deposit(500);
+        account.withdraw(200);
+        System.out.println("Balance: " + account.getBalance());
+    }
+}
+```
+
+✅ Real-world analogy: ATM machine → You don’t directly access cash vault, only through safe operations.
+
+---
+
+### 2. **Abstraction** (Hiding implementation, showing only functionality)
+
+* Using abstract classes or interfaces.
+* Example: A `Payment` system where different methods (UPI, CreditCard) implement payment differently.
+
+```java
+interface Payment {
+    void pay(double amount);
+}
+
+class UpiPayment implements Payment {
+    public void pay(double amount) {
+        System.out.println("Paid ₹" + amount + " using UPI.");
+    }
+}
+
+class CreditCardPayment implements Payment {
+    public void pay(double amount) {
+        System.out.println("Paid ₹" + amount + " using Credit Card.");
+    }
+}
+
+public class AbstractionExample {
+    public static void main(String[] args) {
+        Payment payment = new UpiPayment();
+        payment.pay(500);
+
+        payment = new CreditCardPayment();
+        payment.pay(1000);
+    }
+}
+```
+
+✅ Real-world analogy: You just "make payment" → you don’t care how internally it’s processed.
+
+---
+
+### 3. **Inheritance** (Reusing parent class properties)
+
+* A child class inherits fields & methods from a parent class.
+* Example: `Car` inherits from `Vehicle`.
+
+```java
+class Vehicle {
+    void start() {
+        System.out.println("Vehicle started");
+    }
+}
+
+class Car extends Vehicle {
+    void drive() {
+        System.out.println("Car is driving");
+    }
+}
+
+public class InheritanceExample {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.start(); // inherited
+        car.drive();
+    }
+}
+```
+
+✅ Real-world analogy: A **Car is a type of Vehicle**.
+
+---
+
+### 4. **Polymorphism** (Many forms → Method Overloading & Overriding)
+
+* Example: Same method behaves differently based on context.
+
+```java
+class Calculator {
+    // Compile-time polymorphism (Overloading)
+    int add(int a, int b) { return a + b; }
+    double add(double a, double b) { return a + b; }
+}
+
+class Animal {
+    void sound() { System.out.println("Some sound"); }
+}
+
+class Dog extends Animal {
+    // Runtime polymorphism (Overriding)
+    @Override
+    void sound() { System.out.println("Bark"); }
+}
+
+public class PolymorphismExample {
+    public static void main(String[] args) {
+        // Overloading
+        Calculator calc = new Calculator();
+        System.out.println(calc.add(5, 10));
+        System.out.println(calc.add(2.5, 3.5));
+
+        // Overriding
+        Animal a = new Dog();
+        a.sound(); // Bark
+    }
+}
+```
+
+✅ Real-world analogy: "Pressing a button" → in TV it changes channel, in AC it changes temperature (same action, different results).
+
+---
+
+👉 In **real-time projects** (like in Spring Boot):
+
+* **Encapsulation** → Entity classes with private fields + getters/setters.
+* **Abstraction** → Interfaces (`JpaRepository`, `Service`) hide implementations.
+* **Inheritance** → Controller extends `BaseController`.
+* **Polymorphism** → `@Override` methods in service layers or strategy patterns.
+
 
 ### 2). method overloading Vs method overriding?
 *) Method overloading:
 a). Method name are same but Arguments are different. 
 b). Method overloading is a Compile-time polymorphism.
-d). Private,static and final methods can be overloaded. 
+d). Private, static, and final methods can be overloaded. 
 e). It occurs within the class. 
 
 *) Method overriding.

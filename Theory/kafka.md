@@ -421,3 +421,122 @@ public class ProcessedOrderConsumer {
 ## Note scaling
 If consumer lag > 1000, Kubernetes adds more consumer pods.
 Kafka automatically rebalances partitions across consumers.
+
+Perfect 👍 Let’s extend the **YAML configs** to include **retry + exponential backoff** for **Kafka** and **SQS**.
+
+---
+
+# ✅ 1. Kafka Retry + Exponential Backoff
+
+Spring Kafka provides **Error Handling + Backoff** through `spring.kafka.listener`.
+
+### `application.yml`
+
+```yaml
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: my-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      ack-mode: record
+      type: batch
+      concurrency: 3
+      # Retry + Backoff
+      retry:
+        max-attempts: 5
+        backoff:
+          initial-interval: 1000  # 1 sec
+          multiplier: 2.0         # exponential factor
+          max-interval: 30000     # 30 sec max
+```
+
+### Consumer
+
+```java
+@KafkaListener(topics = "my-topic", groupId = "my-consumer-group")
+public void consume(String message) {
+    System.out.println("Received: " + message);
+    if (message.contains("fail")) {
+        throw new RuntimeException("Simulated failure");
+    }
+}
+```
+
+👉 This will retry with delays: **1s → 2s → 4s → 8s → 16s (max 30s)**.
+
+---
+
+# ✅ 2. SQS Retry + Exponential Backoff
+
+Spring Cloud AWS doesn’t provide YAML retry configs directly, but you can configure it via **Spring Retry**.
+
+### `application.yml`
+
+```yaml
+cloud:
+  aws:
+    region:
+      static: ap-south-1
+    credentials:
+      access-key: YOUR_ACCESS_KEY
+      secret-key: YOUR_SECRET_KEY
+    stack:
+      auto: false
+
+sqs:
+  queue:
+    name: my-queue
+
+spring:
+  retry:
+    enabled: true
+    backoff:
+      initial-interval: 1000   # 1 sec
+      multiplier: 2.0          # exponential growth
+      max-interval: 30000      # 30 sec
+    max-attempts: 5
+```
+
+### Listener Example
+
+```java
+import io.awspring.cloud.messaging.listener.annotation.SqsListener;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MySqsListener {
+
+    @SqsListener("${sqs.queue.name}")
+    @Retryable(
+        value = Exception.class,
+        maxAttemptsExpression = "${spring.retry.max-attempts}",
+        backoff = @Backoff(
+            delayExpression = "${spring.retry.backoff.initial-interval}",
+            multiplierExpression = "${spring.retry.backoff.multiplier}",
+            maxDelayExpression = "${spring.retry.backoff.max-interval}"
+        )
+    )
+    public void receiveMessage(String message) {
+        System.out.println("Received: " + message);
+        if (message.contains("fail")) {
+            throw new RuntimeException("Simulated failure");
+        }
+    }
+}
+```
+
+---
+
+# ✅ Summary
+
+* **Kafka** → Native YAML support for retries + exponential backoff under `spring.kafka.listener.retry`.
+* **SQS** → Achieved via **Spring Retry + annotations**.
+* Both retry on failure with exponential backoff → prevents message flooding.
+
+---

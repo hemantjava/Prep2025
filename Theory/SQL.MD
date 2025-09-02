@@ -73,7 +73,7 @@ ACID stands for Atomicity, Consistency, Isolation, and Durability. Let's break d
    Example: If a database has a constraint that ensures a bank account balance cannot go below zero, the consistency principle ensures that no transaction
    will violate this rule, even temporarily.
 * 3. Isolation: ensures that transactions are executed in isolation from each other, meaning that the operations within a transaction are not visible to other
-   transactions until the transaction is committed.
+   transactions until the transaction is committed(concurrent transaction environment).
    Example: If two transactions are trying to update the same account balance simultaneously, isolation ensures that one transaction's changes are not visible
    to the other until the first transaction is complete, preventing conflicts and ensuring data integrity.
 * 4. Durability: guarantees that once a transaction has been committed, it will remain in the system, even in the event of a system failure (e.g., power outage, crash).
