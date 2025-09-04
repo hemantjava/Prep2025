@@ -1,6 +1,6 @@
 **The SOLID principles**
 
-are five design principles in object-oriented programming that promote maintainable, scalable,
+SOLID principles are five design principles in object-oriented programming that promote maintainable, scalable,
 and robust software design. Each principle focuses on a specific aspect of object-oriented design and can be applied
 individually or in combination
 
