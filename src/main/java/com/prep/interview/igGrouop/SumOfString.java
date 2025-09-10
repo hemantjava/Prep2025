@@ -5,7 +5,7 @@ public class SumOfString {
         String str = "59";
         String str1 = "23";
 
-        System.out.println(STR."Sum: \{addStrings(str, str1)}");//82
+        System.out.println("Sum:"+ addStrings(str, str1));//82
     }
 
     public static String addStrings(String num1, String num2) {

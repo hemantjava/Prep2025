@@ -348,3 +348,14 @@ public class CyclicBarrierExample {
 
 ```
 ![img_6.png](../images/multi-threading/img_6.png)
+
+---
+| Use Case                    | Why Virtual Threads Help                          |
+| --------------------------- | ------------------------------------------------- |
+| High-concurrency HTTP APIs  | Lightweight, scalable threading                   |
+| External HTTP calls         | Blocking calls don’t block OS threads             |
+| Legacy JDBC database access | No need for reactive drivers                      |
+| Background scheduled tasks  | Simple task handling without thread pools         |
+| WebSocket handling          | Efficient, synchronous message processing         |
+| File Upload/Download        | Scalable blocking I/O handling                    |
+| Legacy API integrations     | Easy integration without reactive code complexity |

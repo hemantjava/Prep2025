@@ -14,3 +14,5 @@ SQL indexing and Materialized view?
 Logging pattern console? done
 
 *-+ cache? done
+
+multi-threading and @Async failure scenario
