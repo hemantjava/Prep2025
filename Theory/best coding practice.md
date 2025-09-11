@@ -39,7 +39,7 @@ Great question 👍. In **Spring Boot Java projects**, coding standards are very
 * Avoid **God classes**; keep classes small and focused (SRP).
 * Use **composition over inheritance** where possible.
 * Use **Java Streams** carefully (readability > cleverness).
-* Enable **Checkstyle/PMD/SpotBugs** in CI/CD.
+* Enable **Checkstyle/PMD/SpotBugs** in CI/CD. [Maven plugins]
 
 ---
 
