@@ -5,12 +5,12 @@ import java.util.stream.Collectors;
 
 public class ItineraryExample {
     public static void main(String[] args) {
-        Map<String, String> map = new HashMap<>();
-        //from   ->  to
-        map.put("Chennai", "Bengaluru");
-        map.put("Mumbai", "Delhi");
-        map.put("Goa", "Chennai");
-        map.put("Delhi", "Goa");
+        Map<String, String> map = Map.of(
+                //from   ->  to
+                    "Chennai", "Bengaluru",
+                "Mumbai", "Delhi",
+                "Goa", "Chennai",
+                "Delhi", "Goa");
         //from  -> to
         System.out.println("\n=================");
         System.out.println(getPathList(map));//Mumbai-->Delhi-->Goa-->Chennai-->Bengaluru
