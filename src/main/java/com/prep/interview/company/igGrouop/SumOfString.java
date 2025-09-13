@@ -1,4 +1,4 @@
-package com.prep.interview.igGrouop;
+package com.prep.interview.company.igGrouop;
 
 public class SumOfString {
     static void main() {

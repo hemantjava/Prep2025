@@ -20,11 +20,13 @@ public class BestTimeBuyAndSell {
     public static int maxProfit(int[] prices) {
         if (prices == null || prices.length < 2)
             return 0; // No profit can be made
-        int maxProfit = 0; // Max profit found
-        for (int i = 1; i < prices.length; i++) {
-            if (prices[i - 1] < prices[i]) {
-                maxProfit += (prices[i] - prices[i - 1]);
-            }
+
+        int maxProfit = 0;
+        int min = prices[0];
+
+        for (int v : prices) {
+            min = Math.min(min, v);
+            maxProfit = Math.max(maxProfit, v - min);
         }
         return maxProfit;
     }

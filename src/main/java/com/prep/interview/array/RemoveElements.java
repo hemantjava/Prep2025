@@ -21,6 +21,9 @@ public class RemoveElements {
         int[] nums2 = {1, 1, 2};
         System.out.println(removeDuplicates(nums2));//2
         System.out.println(Arrays.toString(nums2));//[1, 2, 2]
+
+        int[] nums3 = {1, 1, 2};
+        System.out.println(Arrays.toString(removeElement(nums3, 1)));//[2]
     }
 
     private static int removeElements(int[] nums, int val) {
@@ -45,5 +48,10 @@ public class RemoveElements {
             }
         }
         return k;
+    }
+    public static int[] removeElement(int[] arr, int elementToRemove) {
+        return Arrays.stream(arr)
+                .filter(num -> num != elementToRemove)
+                .toArray();
     }
 }

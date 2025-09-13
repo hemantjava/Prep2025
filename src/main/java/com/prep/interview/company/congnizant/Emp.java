@@ -1,4 +1,4 @@
-package com.prep.interview.congnizant;
+package com.prep.interview.company.congnizant;
 
 
 import lombok.AllArgsConstructor;

@@ -1,6 +1,7 @@
 package com.prep.interview.collection.list;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,10 @@ public class RemoveDuplicates {
     //By set then list
     public static List<Integer> removeDuplicates2(List<Integer> nums) {
 
-        return nums.stream().collect(Collectors.toSet()).stream().toList();
+        return nums.stream().distinct().toList();
+    }
+
+    public static int removeDuplicates(int[] nums){
+        return Arrays.stream(nums).distinct().toArray().length;
     }
 }

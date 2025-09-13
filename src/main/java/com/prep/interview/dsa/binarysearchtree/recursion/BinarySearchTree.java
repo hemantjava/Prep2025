@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.stream.IntStream;
 
 public class BinarySearchTree<T extends Comparable<T>> {
     private Node<T> root;
+    public Node<T> getRoot() {
+       return this.root;
+    }
 
     public void insert(T data) {
         root = insertRecursive(root, data);
@@ -65,12 +69,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     private T minValue(Node<T> root) { // minValue is always left side of the tree
-        T minValue = root.data;
-        while (root.left != null) {
-            minValue = root.left.data;
-            root = root.left;
+        Node<T> temp = root;
+        while (temp.left != null) {
+            temp = temp.left;
         }
-        return minValue;
+        return temp.data;
     }
 
     public void inorderTraversal() {  // always sorted form data  -> left - root - right note:- root middle print data in middle
@@ -82,6 +85,20 @@ public class BinarySearchTree<T extends Comparable<T>> {
             inorderTraversalRecursive(root.left);
             System.out.print(root.data + " ");
             inorderTraversalRecursive(root.right);
+        }
+    }
+
+    public List<T> rInorderTraversal() {
+        List<T> result = new ArrayList<>();
+        inorderTraversalRecursive(root,result);
+        return result;
+    }
+
+    private void inorderTraversalRecursive(Node<T> root,List<T> result) {
+        if (root != null) {
+            inorderTraversalRecursive(root.left,result);
+            result.add(root.data);
+            inorderTraversalRecursive(root.right,result);
         }
     }
 
@@ -97,6 +114,20 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
+    public List<T> rPostorderTraversal() {
+        List<T> queue = new LinkedList<>();
+        postorderTraversalRecursive(root,queue);
+        return queue;
+    }
+
+    private void postorderTraversalRecursive(Node<T> root,List<T> queue) {
+        if (root != null) {
+            postorderTraversalRecursive(root.left,queue);
+            postorderTraversalRecursive(root.right,queue);
+            queue.add(root.data);
+        }
+    }
+
     public void preorderTraversal() {//note:- root first print data in first
         preorderTraversalRecursive(root);
     }
@@ -108,11 +139,28 @@ public class BinarySearchTree<T extends Comparable<T>> {
             preorderTraversalRecursive(root.right);
         }
     }
+    // Preorder traversal returning array
+    public List<T> rPreorderTraversal() {
+        List<T> result = new ArrayList<>();
+        preorderTraversalRecursive(root, result);
+        return result;
+    }
 
-    public List<T> breadthFirstSearch(){
-        Queue<Node<T>> queue = new LinkedList<>(); //hold node
+    private void preorderTraversalRecursive(Node<T> root, List<T> result) {
+        if (root != null) {
+            result.add(root.data); // root
+            preorderTraversalRecursive(root.left, result);  // left
+            preorderTraversalRecursive(root.right, result); // right
+        }
+    }
+
+
+
+    //Imp
+    public List<T> breadthFirstSearch(){ //Level Order traversal
+        Queue<Node<T>> queue = new LinkedList<>(); //hold node/root node
         List<T> result = new ArrayList<>();//hold data
-        queue.add(root);
+        queue.add(root); //holding root node
         while (!queue.isEmpty()){
             Node<T> currentNode = queue.remove();//dequeue
             result.add(currentNode.data);
@@ -125,6 +173,36 @@ public class BinarySearchTree<T extends Comparable<T>> {
        return  result;
     }
 
+    //Imp
+    public List<List<T>> levelOrderTraversal() {
+        Queue<Node<T>> queue = new LinkedList<>();
+        List<List<T>> result = new ArrayList<>();
+        if (root == null) return result;
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();  // Number of nodes at current level
+            List<T> currentLevel = new ArrayList<>();
+
+            for (int i = 0; i < levelSize; i++) {
+                Node<T> currentNode = queue.remove();
+                currentLevel.add(currentNode.data);
+
+                if (currentNode.left != null) {
+                    queue.add(currentNode.left);
+                }
+
+                if (currentNode.right != null) {
+                    queue.add(currentNode.right);
+                }
+            }
+
+            result.add(currentLevel);
+        }
+
+        return result;
+    }
+
     public T minValue() {
         return minValue(root);
     }
@@ -134,31 +212,37 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     private T maxValue(Node<T> root) {
-        T maxValue = root.data;
-        while (root.right != null) {
-            maxValue = root.right.data;
-            root = root.right;
+        Node<T> temp = root;
+        while (temp.right != null) {
+            temp = temp.right;
         }
-        return maxValue;
+        return temp.data;
+    }
+    public boolean isValidBST(Node<Integer> root) {
+        List<Integer> list = new ArrayList<>();
+        inOrderTraversal(root, list);
+
+        return IntStream.range(0, list.size() - 1)
+                .allMatch(i -> list.get(i) <= (list.get(i + 1)));  // Strictly increasing
     }
 
-    public static void main(String[] args) {
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
-        int[] data = {50, 30, 70, 20, 40};
-        for (int val : data) {
-            bst.insert(val);
-        }
-        System.out.println("Inorder Traversal:");
-        bst.inorderTraversal();
-        System.out.println("\nPostorder Traversal:");
-        bst.postorderTraversal();
-        System.out.println("\nPreorder Traversal:");
-        bst.preorderTraversal();
-        System.out.println("\nminValue: " + bst.minValue());
-        System.out.println("maxValue: " + bst.maxValue());
-        System.out.println("search 50:" + bst.search(50));
-        System.out.println(bst.breadthFirstSearch());
-
-
+    private void inOrderTraversal(Node<Integer> root, List<Integer> list) {
+        if (root == null) return;
+        inOrderTraversal(root.left, list);
+        list.add(root.data);
+        inOrderTraversal(root.right, list);
     }
+    /**
+     *      public boolean isValidBST(TreeNode root) {
+     *         return isValid(root,Long.MIN_VALUE,Long.MAX_VALUE);
+     *     }
+     *     private static boolean isValid(TreeNode node, long min,long max){
+     *         if(node == null)
+     *         return true;
+     *         if(node.val <= min || node.val >= max)
+     *         return false;
+     *         return isValid(node.left ,min,(long) node.val) && isValid(node.right ,(long)node.val ,max);
+     *     }
+     */
+
 }

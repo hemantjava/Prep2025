@@ -1,17 +1,15 @@
 package com.prep.interview.array;
 
+import java.util.Arrays;
+
 public class RotateKTimeArray {
     public static void rotate(int[] nums, int k) {
         int n = nums.length;
-
         k = k % n; // Handle cases where k >= n
-
         // Reverse the entire array
         reverse(nums, 0, n - 1);
-
         // Reverse the first k elements
         reverse(nums, 0, k - 1);
-
         // Reverse the remaining elements
         reverse(nums, k, n - 1);
     }
@@ -36,9 +34,7 @@ public class RotateKTimeArray {
       //  nums = rotate1(nums,k);
 
         // Output the rotated array
-        for (int num : nums) {
-            System.out.print(num + " ");
-        }
+        System.out.println(Arrays.toString(nums));//[5, 6, 7, 1, 2, 3, 4]
     }
 
     public static int[] rotate1(int[] nums, int k) {

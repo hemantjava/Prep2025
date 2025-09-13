@@ -158,3 +158,128 @@ Great question 👍. In **Spring Boot Java projects**, coding standards are very
 
 ✅ **Golden Rule**:
 Code should be **Readable → Testable → Maintainable → Secure → good Performance**.
+Here’s a **complete production-ready template** including `UserService`, `UserDto`, and exception handling.
+
+---
+
+### ✅ 1️⃣ UserDto (Immutable Data Transfer Object)
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDto {
+    private Long id;
+
+    @NotBlank(message = "Username is required")
+    private String username;
+
+    @Email(message = "Invalid email format")
+    private String email;
+}
+```
+
+---
+
+### ✅ 2️⃣ UserService (Business Logic Layer)
+
+```java
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    public Optional<UserDto> findById(Long id) {
+        return userRepository.findById(id)
+                .map(user -> new UserDto(user.getId(), user.getUsername(), user.getEmail()));
+    }
+
+    public UserDto save(UserDto userDto) {
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        User savedUser = userRepository.save(user);
+        return new UserDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
+    }
+}
+```
+
+---
+
+### ✅ 3️⃣ ResourceNotFoundException (Custom Exception)
+
+```java
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}
+```
+
+---
+
+### ✅ 4️⃣ Global Exception Handler
+
+```java
+@RestControllerAdvice
+@Slf4j
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleNotFound(ResourceNotFoundException ex) {
+        log.error("Resource not found: {}", ex.getMessage());
+        Map<String, String> error = Map.of("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationErrors(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = ex.getBindingResult().getFieldErrors().stream()
+                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+
+        log.error("Validation failed: {}", errors);
+        return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
+        log.error("Unexpected error occurred", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Something went wrong"));
+    }
+}
+```
+
+---
+
+### ✅ 5️⃣ Sample Entity (Optional for Reference)
+
+```java
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+    private String email;
+}
+```
+
+---
+
+### ✅ Summary of Best Practices Covered:
+
+* Input validation with `@Valid` and annotations.
+* Clear separation of concerns: Controller → Service → Repository.
+* Custom exceptions with proper HTTP status codes.
+* Global exception handling with meaningful error responses.
+* Logging useful info and errors.
+* Immutable DTO pattern.
+
+

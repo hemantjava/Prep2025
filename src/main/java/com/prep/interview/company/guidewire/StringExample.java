@@ -1,4 +1,4 @@
-package com.prep.interview.guidewire;
+package com.prep.interview.company.guidewire;
 
 public class StringExample {
     public static void main(String[] args) {

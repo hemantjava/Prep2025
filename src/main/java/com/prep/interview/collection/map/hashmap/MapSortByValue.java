@@ -16,19 +16,19 @@ public class MapSortByValue {
         map.put("d",1);
      //   System.out.println(map);
         sortByValue(map);
-       // sortByValueReverse(map);
+       sortByValueReverse(map);
 
     }
 
     private static  void sortByValue(Map<String,Integer> map){
         Map<String, Integer> map1 = map.entrySet().stream().sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(v1,v2)->v1, LinkedHashMap::new));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(v1,v2)->v2, LinkedHashMap::new));
         System.out.println(map1);
     }
 
     private static  void sortByValueReverse(Map<String,Integer> map){
         Map<String, Integer> map1 = map.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(v1,v2)->v1, LinkedHashMap::new));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(v1,v2)->v2, LinkedHashMap::new));
         System.out.println(map1);
     }
 }
