@@ -132,4 +132,90 @@ Choosing the right caching strategy depends on the use case:
 - **Write-heavy applications** may need **Write Around** or **Write Back** to optimize performance.
 - **Consistency-critical applications** should use **Write Through** for synchronized updates.
 
-Each strategy has trade-offs, and in real-world applications, a combination of these strategies is often used to balance performance, consistency, and scalability. 🚀
+Each strategy has trade-offs, and in real-world applications, a combination of these strategies is often used to balance performance, consistency, and scalability. 
+
+Yes, we can evict or delete data from a cache based on time, commonly called **time-based eviction** or **time-to-live (TTL)** eviction.
+
+### ✅ Common Strategies for Time-based Cache Eviction:
+
+1. ✅ **Time-to-Live (TTL):**
+   Every cache entry is stored with a timestamp or an expiry time.
+   Once the configured time (e.g., 3 seconds, 5 seconds) is exceeded, the entry is automatically evicted or marked invalid.
+
+2. ✅ **Fixed Expiry Time:**
+   Items expire exactly after a configured time, e.g., 5 seconds from insertion.
+
+---
+
+### ✅ Example Solutions in Java:
+
+#### 1️⃣ Using **Caffeine Cache**
+
+```java
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
+import java.util.concurrent.TimeUnit;
+
+public class CacheExample {
+    public static void main(String[] args) {
+        Cache<String, String> cache = Caffeine.newBuilder()
+                .expireAfterWrite(5, TimeUnit.SECONDS)  // Expire entries 5 seconds after being written
+                .build();
+
+        cache.put("key1", "value1");
+
+        String value = cache.getIfPresent("key1");
+        System.out.println("Cached Value: " + value);
+
+        // Wait for more than 5 seconds and then try to get the value again
+    }
+}
+```
+
+#### 2️⃣ Using **Guava Cache**
+
+```java
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
+import java.util.concurrent.TimeUnit;
+
+public class GuavaCacheExample {
+    public static void main(String[] args) throws InterruptedException {
+        Cache<String, String> cache = CacheBuilder.newBuilder()
+                .expireAfterWrite(3, TimeUnit.SECONDS)  // Expire after 3 seconds
+                .build();
+
+        cache.put("key", "value");
+
+        System.out.println("Before expiry: " + cache.getIfPresent("key"));
+        Thread.sleep(4000);  // Sleep 4 seconds
+        System.out.println("After expiry: " + cache.getIfPresent("key"));  // Should be null
+    }
+}
+```
+
+---
+
+### ✅ In Distributed Caching (e.g., Redis):
+
+You can set TTL per key directly:
+
+```bash
+SET mykey "some value" EX 5  # Expires after 5 seconds
+```
+
+Or in Java (with Redis client):
+
+```java
+jedis.setex("mykey", 5, "some value");  // TTL of 5 seconds
+```
+
+---
+
+### ✅ Summary:
+
+* TTL-based eviction is a standard feature in many cache solutions.
+* You can configure time-based expiry in libraries like **Caffeine**, **Guava**, **Redis**, **Ehcache**.
+* Ensure the eviction strategy fits your use-case (e.g., expire after write vs expire after access).
