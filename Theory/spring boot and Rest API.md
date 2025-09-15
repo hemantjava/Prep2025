@@ -30,6 +30,37 @@ Authorisation checks user is authorized or not(403 HTTP ERROR CODE)/(forbidden) 
    ![img.png](..%2Fimages%2Fspring%20boot%2Fimg.png)
    ![img_1.png](..%2Fimages%2Fspring%20boot%2Fimg_1.png)
 
+### ✅ What is WebSocket?
+
+**WebSocket** is a protocol that provides full-duplex, bidirectional communication between a client (usually a browser) and a server over a single long-lived TCP connection.
+Unlike HTTP, which is request-response and stateless, WebSocket allows real-time data transfer with low latency.
+
+---
+
+### ✅ Why use WebSocket?
+
+* Real-time applications (chat apps, live feeds, online games).
+* Low overhead (compared to HTTP polling).
+* Efficient for frequent small messages.
+
+---
+
+### ✅ WebSocket vs HTTP
+
+| Feature       | HTTP                   | WebSocket                                 |
+| ------------- | ---------------------- | ----------------------------------------- |
+| Communication | Request-Response       | Full Duplex                               |
+| Connection    | Short-lived            | Long-lived                                |
+| Use Case      | API calls, static data | Real-time data (chat, live notifications) |
+| Protocol      | Stateless              | Stateful                                  |
+
+
+---
+
+### ✅ Summary
+
+* WebSocket enables real-time bidirectional communication.
+
 4) What is Actuator?
    -> Basically Actuator is used for Monitoring the health of our application.
    like metrics,bean,health
