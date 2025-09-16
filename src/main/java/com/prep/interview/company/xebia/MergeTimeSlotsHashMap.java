@@ -1,4 +1,4 @@
-package com.prep.interview.xebia;
+package com.prep.interview.company.xebia;
 
 import java.util.*;
 

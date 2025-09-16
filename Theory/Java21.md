@@ -52,16 +52,6 @@ default       -> "unknown";
 }
 
 ```
-
-
-### 7. Unnamed Classes & Instance Main Methods (Preview – JEP 445)
-* Simplifies writing small Java programs.
-* (No public class needed)
-```java
-void main() {
-System.out.println("Hello, World!");
-}
-```
 ### 8. Foreign Function & Memory API (Finalized – JEP 442)
 * Interop with native code (C libraries).
 * Alternative to JNI with safe memory management.

@@ -26,7 +26,8 @@ a single ACID transaction across them, like in a monolith.
 
 ## 🔹 Transaction Management in Spring Boot
 
-Spring Boot provides **declarative transaction management** using `@Transactional`. It integrates with Spring’s `PlatformTransactionManager` and works on top of JDBC, JPA, Hibernate, etc.
+Spring Boot provides **declarative transaction management** using `@Transactional`. It integrates 
+with Spring’s `PlatformTransactionManager` and works on top of JDBC, JPA, Hibernate, etc.
 
 A **transaction** is a unit of work that either **completes fully (commit)** or **fails completely (rollback)** to maintain **data consistency**.
 

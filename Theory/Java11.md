@@ -17,9 +17,6 @@
     * Java 11 simplified converting collections to arrays by adding an overload of toArray.
 * Unicode 10 Support
     * Java 11 supports Unicode 10, adding symbols like new currency signs and emojis.
-* Deprecated Nashorn JavaScript Engine
-    * The Nashorn JavaScript engine is deprecated in Java 11 and scheduled for removal in a future release.
-      The engine allowed running JavaScript within Java applications.
 * New Collection Factories in Collectors
     * Java 11 added convenience methods for unmodifiable collections in Collectors, like toUnmodifiableList,
       toUnmodifiableSet, and toUnmodifiableMap.
