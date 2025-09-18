@@ -1,84 +1,102 @@
 package com.prep.interview.dsa.lru;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
-// Sure! Here's an example of an LRU (Least Recently Used) cache implementation in Java using a combination of a
-// doubly linked list and a HashMap:
-public class LRUCache {
-    private class Node {
-        int key;
-        int value;
-        Node prev;
-        Node next;
+//inheritance
+public class LRUCache<K, V> extends LinkedHashMap<K, V> {
+    private final int capacity;
 
-        @Override
-        public String toString() {
-            return  ""+value;
-        }
-    }
-
-    private int capacity;
-    private Map<Integer, Node> cache;
-    private Node head;
-    private Node tail;
 
     public LRUCache(int capacity) {
+       super(capacity, 0.75F, true);
+        //accessOrder – the ordering mode - true for access-order, false for insertion-order
         this.capacity = capacity;
-        cache = new HashMap<>(capacity);
-        head = new Node();
-        tail = new Node();
-        head.next = tail;
-        tail.prev = head;
     }
 
-    public int get(int key) {
-        Node node = cache.get(key);
-        if (node != null) {
-            removeNode(node);
-            addNodeToHead(node);
-            return node.value;
-        }
-        return -1;
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+        return size() > capacity;
     }
+}
+// composition
 
-    public void put(int key, int value) {
-        Node node = cache.get(key);
-        if (node != null) {
-            node.value = value;
-            removeNode(node);
-        } else {
-            if (cache.size() == capacity) {
-                Node tailPrev = tail.prev;
-                removeNode(tailPrev);
-                cache.remove(tailPrev.key);
+class MyLRUCache<K, V> {
+
+    private final LinkedHashMap<K, V> map;
+
+    public MyLRUCache(int capacity) {
+        map = new LinkedHashMap<>(capacity, 0.75F, true) {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+                return size() > capacity;
             }
-            node = new Node();
-            node.key = key;
-            node.value = value;
-        }
-        addNodeToHead(node);
-        cache.put(key, node);
+        };
     }
 
-    private void removeNode(Node node) {
-        Node prevNode = node.prev;
-        Node nextNode = node.next;
-        prevNode.next = nextNode;
-        nextNode.prev = prevNode;
+    public synchronized V get(K key) {
+        return map.getOrDefault(key, null);
     }
 
-    private void addNodeToHead(Node node) {
-        Node nextNode = head.next;
-        head.next = node;
-        node.prev = head;
-        node.next = nextNode;
-        nextNode.prev = node;
+    public synchronized void put(K key, V value) {
+        map.put(key, value);
+    }
+
+    public synchronized int size() {
+        return map.size();
     }
 
     @Override
     public String toString() {
-        return cache.values().stream().map(Node::toString).collect(Collectors.joining(","));
+        return map.toString();
+    }
+}
+
+class InterLRUCache<K, V> {
+
+    private final int capacity;
+    private final HashMap<K, V> map;
+    private final LinkedList<K> usageOrder;
+
+    public InterLRUCache(int capacity) {
+        this.capacity = capacity;
+        this.map = new HashMap<>();
+        this.usageOrder = new LinkedList<>();
+    }
+
+    public V get(K key) {
+        if (!map.containsKey(key)) {
+            return null;
+        }
+        // Move key to the end (most recently used)
+        usageOrder.remove(key);
+        usageOrder.addLast(key);
+
+        return map.get(key);
+    }
+
+    public void put(K key, V value) {
+        if (map.containsKey(key)) {
+            // Update value and mark as recently used
+            map.put(key, value);
+            usageOrder.remove(key);
+            usageOrder.addLast(key);
+        } else {
+            if (map.size() >= capacity) {
+                // Evict least recently used
+                K oldestKey = usageOrder.removeFirst();
+                map.remove(oldestKey);
+            }
+            map.put(key, value);
+            usageOrder.addLast(key);
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (K key : usageOrder) {
+            sb.append("(").append(key).append(":").append(map.get(key)).append(") ");
+        }
+        return sb.toString();
     }
 }
