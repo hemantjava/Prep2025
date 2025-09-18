@@ -8,8 +8,9 @@ import java.util.stream.IntStream;
 
 public class BinarySearchTree<T extends Comparable<T>> {
     private Node<T> root;
+
     public Node<T> getRoot() {
-       return this.root;
+        return this.root;
     }
 
     public void insert(T data) {
@@ -90,15 +91,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     public List<T> rInorderTraversal() {
         List<T> result = new ArrayList<>();
-        inorderTraversalRecursive(root,result);
+        inorderTraversalRecursive(root, result);
         return result;
     }
 
-    private void inorderTraversalRecursive(Node<T> root,List<T> result) {
+    private void inorderTraversalRecursive(Node<T> root, List<T> result) {
         if (root != null) {
-            inorderTraversalRecursive(root.left,result);
+            inorderTraversalRecursive(root.left, result);
             result.add(root.data);
-            inorderTraversalRecursive(root.right,result);
+            inorderTraversalRecursive(root.right, result);
         }
     }
 
@@ -116,14 +117,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     public List<T> rPostorderTraversal() {
         List<T> queue = new LinkedList<>();
-        postorderTraversalRecursive(root,queue);
+        postorderTraversalRecursive(root, queue);
         return queue;
     }
 
-    private void postorderTraversalRecursive(Node<T> root,List<T> queue) {
+    private void postorderTraversalRecursive(Node<T> root, List<T> queue) {
         if (root != null) {
-            postorderTraversalRecursive(root.left,queue);
-            postorderTraversalRecursive(root.right,queue);
+            postorderTraversalRecursive(root.left, queue);
+            postorderTraversalRecursive(root.right, queue);
             queue.add(root.data);
         }
     }
@@ -139,6 +140,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             preorderTraversalRecursive(root.right);
         }
     }
+
     // Preorder traversal returning array
     public List<T> rPreorderTraversal() {
         List<T> result = new ArrayList<>();
@@ -155,22 +157,22 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
 
-
     //Imp
-    public List<T> breadthFirstSearch(){ //Level Order traversal
+    public List<T> breadthFirstSearch() { //Level Order traversal
         Queue<Node<T>> queue = new LinkedList<>(); //hold node/root node
         List<T> result = new ArrayList<>();//hold data
         queue.add(root); //holding root node
-        while (!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             Node<T> currentNode = queue.remove();//dequeue
             result.add(currentNode.data);
-            if (currentNode.left != null){
+            if (currentNode.left != null) {
                 queue.add(currentNode.left);
-            }if (currentNode.right != null){
+            }
+            if (currentNode.right != null) {
                 queue.add(currentNode.right);
             }
         }
-       return  result;
+        return result;
     }
 
     //Imp
@@ -218,6 +220,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
         return temp.data;
     }
+
     public boolean isValidBST(Node<Integer> root) {
         List<Integer> list = new ArrayList<>();
         inOrderTraversal(root, list);
@@ -232,17 +235,75 @@ public class BinarySearchTree<T extends Comparable<T>> {
         list.add(root.data);
         inOrderTraversal(root.right, list);
     }
-    /**
-     *      public boolean isValidBST(TreeNode root) {
-     *         return isValid(root,Long.MIN_VALUE,Long.MAX_VALUE);
-     *     }
-     *     private static boolean isValid(TreeNode node, long min,long max){
-     *         if(node == null)
-     *         return true;
-     *         if(node.val <= min || node.val >= max)
-     *         return false;
-     *         return isValid(node.left ,min,(long) node.val) && isValid(node.right ,(long)node.val ,max);
-     *     }
-     */
 
+    public static boolean isValidBST(TreeNode root) {
+        return isValid(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    private static boolean isValid(TreeNode node, long min, long max) {
+        if (node == null)
+            return true;
+        if (node.val <= min || node.val >= max)
+            return false;
+        return isValid(node.left, min, (long) node.val) && isValid(node.right, (long) node.val, max);
+    }
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        while (root != null) {
+            if (p.val > root.val && q.val > root.val) {
+                root = root.right;
+            } else if (p.val < root.val && q.val < root.val) {
+                root = root.left;
+            } else {
+                return root;
+            }
+        }
+        return null;
+    }
+    // Global variable to track the maximum diameter found so far
+    private int diameter = 0;
+
+    /**
+     * The diameter is the length of the longest path between any two nodes in the tree.
+     */
+    public int diameterOfBinaryTree(TreeNode root) {
+        calculateHeight(root);  // start recursive depth calculation
+        return diameter;
+    }
+
+    /**
+     * Helper function to calculate the height of a subtree.
+     * While calculating height, it also updates the diameter.
+     *
+     * @param node current root of the subtree
+     * @return height of the subtree rooted at 'node'
+     */
+    private int calculateHeight(TreeNode node) {
+        // Base case: null node has height 0
+        if (node == null) {
+            return 0;
+        }
+
+        // Recursively calculate the height of left and right subtrees
+        int leftHeight = calculateHeight(node.left);
+        int rightHeight = calculateHeight(node.right);
+
+        // The longest path passing through this node = leftHeight + rightHeight
+        diameter = Math.max(diameter, leftHeight + rightHeight);
+
+        // Return the height of the subtree = max(left, right) + 1 (counting current node)
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    public TreeNode mirror(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        // Swap left and right subtrees
+       TreeNode temp = root.left;
+        root.left = mirror(root.right);
+        root.right = mirror(temp);
+
+        return root;
+    }
 }
