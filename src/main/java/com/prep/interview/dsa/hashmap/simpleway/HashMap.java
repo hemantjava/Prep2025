@@ -14,7 +14,6 @@ public class HashMap<K, V> implements Map<K, V> {
 
     private static final int DEFAULT_CAPACITY = 16;
     private ArrayList<LinkedList<Entry<K, V>>> buckets;
-    private final int capacity;
     private int size;
 
     public HashMap() {
@@ -22,7 +21,6 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     public HashMap(int capacity) {
-        this.capacity = capacity;
         size = 0;
         buckets =  new ArrayList<>(capacity);
         for (int i = 0; i < capacity; i++) {

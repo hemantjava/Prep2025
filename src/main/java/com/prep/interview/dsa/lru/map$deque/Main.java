@@ -10,8 +10,8 @@ public class Main {
         System.out.println(cache);//{1=10, 2=20, 3=30}
         cache.put(4, 40);
         System.out.println(cache);//{2=20, 3=30, 4=40}
-        System.out.println(cache.get(3));// true for access-order
-        System.out.println(cache);//{2=20, 4=40, 3=30}
+        System.out.println(cache.get(2));// true for access-order
+        System.out.println(cache);//{3=30,4=40,2=20}
     }
 
 }

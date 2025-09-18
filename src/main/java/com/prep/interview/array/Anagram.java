@@ -8,8 +8,8 @@ public class Anagram {
     public static void main(String[] args) {
         System.out.println(isValidAnagram("anagram", "mnagraa"));
         System.out.println(isAnagram("anagram", "mnagraa"));
-       System.out.println(isAnagramMap("anagrAM", "MnAgraa"));
-        System.out.println('A'- 'a');
+        System.out.println(isAnagramMap("anagrAM", "MnAgraa"));
+        System.out.println('A' - 'a');
     }
 
     private static boolean isValidAnagram(String source, String target) {
@@ -49,7 +49,7 @@ public class Anagram {
 
         // Count frequency of chars in s
         for (char c : s.toCharArray()) {
-            map.put(c, map.getOrDefault(c, 0) + 1);
+            map.merge(c, 1, Integer::sum);
         }
 
         // Subtract frequency using t
@@ -57,7 +57,7 @@ public class Anagram {
             if (!map.containsKey(c)) {
                 return false; // char not in s
             }
-            map.put(c, map.get(c) - 1);
+            map.merge(c, 1, (a, b) -> a - b);
             if (map.get(c) == 0) {
                 map.remove(c); // clean up
             }

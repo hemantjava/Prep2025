@@ -2,7 +2,7 @@ package com.prep.interview.array;
 
 public class AdjacentSum {
     public static void main(String[] args) {
-        int[] array = {1, 2, 5, 6, 2};//3
+        int[] array = {1, 2, 5, 6, 1};//3
         System.out.println(findAdjacentSum(array));
     }
     private static int findAdjacentSum(int[] numbers) {

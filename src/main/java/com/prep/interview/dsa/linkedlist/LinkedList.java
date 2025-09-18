@@ -142,10 +142,8 @@ public class LinkedList<T> {
     void reverse() {
         Node<T> current = head;
         Node<T> previous = null;
-        Node<T> next = null;
-
         while (current != null) {
-            next = current.next;
+            Node<T>  next = current.next;
             current.next = previous;
             previous = current; //head,current 2nd
             current = next;
@@ -190,6 +188,39 @@ public class LinkedList<T> {
              fast = fast.next.next;
         }
         return slow.data;
+    }
+    // Recursive function to merge two sorted lists
+    public Node<T> mergeTwoLists(Node<T>  list1, Node<T>  list2) {
+        // Base cases:
+        if (list1 == null)
+            return list2; // If list1 is empty, return list2
+        if (list2 == null)
+            return list1; // If list2 is empty, return list1
+
+        // Recursive case:
+        if ((int)list1.data <= (int)list2.data) {
+            // list1's value is smaller, keep list1 node
+            list1.next = mergeTwoLists(list1.next, list2);
+            return list1;
+        } else {
+            // list2's value is smaller, keep list2 node
+            list2.next = mergeTwoLists(list1, list2.next);
+            return list2;
+        }
+    }
+
+    public boolean hasCycle(Node<T> head) {
+        Node<T> slow=head;
+        Node<T> fast=head;
+
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+            if(slow==fast){
+                return true;
+            }
+        }
+        return false;
     }
 
 
