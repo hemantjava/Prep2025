@@ -22,7 +22,12 @@ SELECT *
 FROM geeksforgeeks g1
 WHERE salary > (select avg(salary) from geeksforgeeks g2 where g2.department = g1.department);
 ```
-  OR with join
+
+-- dept_name,total number of employees in department, average salary of the department,
+
+select d.name as dept_name,count(d.emp_id) as total_number ,avg(e.salary) as average_salry
+from departments d left join employees e on d.dept_id = e.dept_id group by d.dept_name
+
 ```sql
 SELECT A.name, B.dept_name, A.salary
 FROM employees A
@@ -31,22 +36,21 @@ JOIN departments B
 WHERE A.salary > (
     SELECT AVG(e1.salary)
     FROM employees e1
-    WHERE A.dept_id = e1.dept_id
-);
+    WHERE A.dept_id = e1.dept_id);
 ``` 
 ## OTHER
 ```sql
-elect
-B.dept_name as dept_name, COUNT(A.emp_id) as employee_count, AVG(salary) as avg_sal
+select
+B.dept_name as dept_name, COUNT(A.emp_id) as employee_count, AVG(A.salary) as avg_sal
 FROM departments B
 LEFT JOIN employees A
 ON  A.dept_id = B.dept_id
 GROUP BY B.dept_name
-```
+```  
 ## Employee Bonus
 ```sql
 select E.name, B.bonus from Employee E
 left join Bonus B on (E.empId = B.empId)
 where B.bonus < 1000 or b.bonus is null;
-
+   
 ```

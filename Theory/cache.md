@@ -219,3 +219,91 @@ jedis.setex("mykey", 5, "some value");  // TTL of 5 seconds
 * TTL-based eviction is a standard feature in many cache solutions.
 * You can configure time-based expiry in libraries like **Caffeine**, **Guava**, **Redis**, **Ehcache**.
 * Ensure the eviction strategy fits your use-case (e.g., expire after write vs expire after access).
+
+Got it 👍 Let’s cover **cache eviction strategies** with **short definitions** and I’ll also provide an **animated-style diagram** (sequence illustration).
+
+---
+
+## 🔑 Common Cache Eviction Strategies
+
+1. **FIFO (First-In, First-Out)**
+
+    * Removes the **oldest inserted** item first.
+    * Simple but not always optimal for cache hit ratio.
+
+2. **LIFO (Last-In, First-Out)**
+
+    * Removes the **most recently inserted** item first.
+    * Rarely used in practice.
+
+3. **LRU (Least Recently Used)**
+
+    * Removes the item that was used **longest ago**.
+    * Good when recent usage predicts future usage.
+
+4. **MRU (Most Recently Used)**
+
+    * Removes the **most recently accessed** item first.
+    * Useful when older items are more likely to be reused.
+
+5. **LFU (Least Frequently Used)**
+
+    * Removes the item with the **lowest access count**.
+    * Works well when frequently used items stay hot.
+
+6. **Random Replacement**
+
+    * Removes a **random item** from the cache.
+    * Easy to implement, but performance is unpredictable.
+
+---
+
+## 🎞 Animated-style Diagram (conceptual sequence)
+
+Imagine a cache of size **3** with items coming in: `A → B → C → D`
+
+### FIFO
+
+```
+Cache: [A, B, C]  (full)
+New: D → Evict A → [B, C, D]
+```
+
+### LRU
+
+```
+Access order: A → B → C
+Cache: [A, B, C]
+New: D → Evict least recently used (A) → [B, C, D]
+```
+
+### LFU
+
+```
+Access counts: A(5), B(1), C(2)
+Cache: [A, B, C]
+New: D → Evict lowest freq (B) → [A, C, D]
+```
+
+### MRU
+
+```
+Cache: [A, B, C]  
+Last accessed = C  
+New: D → Evict C → [A, B, D]
+```
+
+### Random
+
+```
+Cache: [A, B, C]  
+New: D → Random eviction (say B) → [A, C, D]
+```
+
+### TTL (time to live)
+```
+Cache: [A, B, C]         // A(5s) ,B(2s),C(3s)      And TTL set to -> 5S
+eviction (5) → [C, D]
+```
+---
+
