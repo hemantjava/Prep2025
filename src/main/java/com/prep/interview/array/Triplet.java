@@ -1,18 +1,19 @@
 package com.prep.interview.array;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Triplet {
     static void main() {
-        int[] arr = {1, 4, 45, 6, 10, 8};
-        int target = 13;
+        int[] arr = {-1, 0, 1, 2, -1, -4};
+        ;
+        int target = 0;
         System.out.println(hasTripletSum(arr, target));
-        System.out.println(hasTripletSum(arr, target));
+        System.out.println(hasTripletSum1(arr, target));
     }
 
     // Using Set TC: O(n^2) and SC: O(n)
-    static boolean hasTripletSum(int[] arr, int target) {
+    static List<List<Integer>> hasTripletSum(int[] arr, int target) {
+        List<List<Integer>> list = new ArrayList<>();
         int n = arr.length;
 
         // Fix the first element as arr[i]
@@ -27,7 +28,7 @@ public class Triplet {
 
                 // Search for second element in hash set
                 if (st.contains(second)) {
-                    return true;
+                    list.add(Arrays.asList(arr[i], arr[j], second));
                 }
 
                 // Add arr[j] as a potential second element
@@ -35,10 +36,13 @@ public class Triplet {
             }
         }
 
-        return false;
+        return list;
     }
 
-    static boolean hasTripletSum1(int[] arr, int target) {
+    // Using Set TC: O(n^3)
+
+    static List<List<Integer>> hasTripletSum1(int[] arr, int target) {
+        List<List<Integer>> list = new ArrayList<>();
         int n = arr.length;
 
         // Fix the first element as arr[i]
@@ -50,12 +54,13 @@ public class Triplet {
                 // Now look for the third number
                 for (int k = j + 1; k < n; k++) {
                     if (arr[i] + arr[j] + arr[k] == target)
-                        return true; // If a triplet is found
+                        list.add(Arrays.asList(arr[i], arr[j], arr[k]));
+                    // return true; // If a triplet is found
                 }
             }
         }
 
-        return false;
+        return list;
     }
 
 }

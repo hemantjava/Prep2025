@@ -52,13 +52,13 @@ public class Anagram {
             map.merge(c, 1, Integer::sum);
         }
 
-        // Subtract frequency using t
         for (char c : t.toCharArray()) {
             if (!map.containsKey(c)) {
-                return false; // char not in s
+                return false; // char not in s map
             }
+            // Subtract frequency using t
             map.merge(c, 1, (a, b) -> a - b);
-            if (map.get(c) == 0) {
+            if (map.get(c) == 0) {    // checking map value if '0' then remove key value (entry from map)
                 map.remove(c); // clean up
             }
         }

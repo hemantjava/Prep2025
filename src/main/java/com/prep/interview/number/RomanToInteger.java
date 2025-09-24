@@ -1,40 +1,35 @@
 package com.prep.interview.number;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class RomanToInteger {
     public static int romanToInt(String s) {
-        // Map to store Roman numeral values
-        HashMap<Character, Integer> romanValues = new HashMap<>();
-        romanValues.put('I', 1);
-        romanValues.put('V', 5);
-        romanValues.put('X', 10);
-        romanValues.put('L', 50);
-        romanValues.put('C', 100);
-        romanValues.put('D', 500);
-        romanValues.put('M', 1000);
+        Map<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
 
-        int total = 0; // Resulting integer value
-        int prevValue = 0; // Value of the previous Roman numeral
+        int total = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int value = map.get(s.charAt(i));
 
-        // Iterate through the Roman numeral string from right to left
-        for (int i = s.length() - 1; i >= 0; i--) {
-            int currentValue = romanValues.get(s.charAt(i));
-
-            // If current value is less than the previous value, subtract it (subtraction rule)
-            if (currentValue < prevValue) {
-                total -= currentValue;
-            } else { // Otherwise, add the current value
-                total += currentValue;
+            // Lookahead to check subtractive case
+            //  i + 1 < s.length() ensures there is a next character (avoid index out of bounds).
+            //  value < map.get(s.charAt(i + 1)) checks if the current symbol is less than the next symbol.
+            // If both true, we are in a subtractive case (e.g., I before V or X before L).
+            if (i + 1 < s.length() && value < map.get(s.charAt(i + 1))) {
+                total -= value;
+            } else {
+                total += value;
             }
-
-            // Update the previous value
-            prevValue = currentValue;
         }
-
         return total;
     }
-
     public static void main(String[] args) {
         String roman = "IV"; // Example: 1994
         int result = romanToInt(roman);

@@ -8,7 +8,6 @@ public class CheckDuplicateContains {
         int[] nums = {1, 2, 3, 1};
         System.out.println(checkDuplicate(nums));
         System.out.println(checkDuplicate2(nums));
-        System.out.println(checkDuplicate3(nums));
     }
 
     //TC: O(n log n)
@@ -33,15 +32,4 @@ public class CheckDuplicateContains {
         return false;
     }
 
-    //TC: O(n^2)
-    private static boolean checkDuplicate3(int[] nums) {
-        int n = nums.length;
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = i + 1; j < n; j++) {
-                if (nums[i] == nums[j])
-                    return true;
-            }
-        }
-        return false;
-    }
 }

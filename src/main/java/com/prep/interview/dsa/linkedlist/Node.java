@@ -1,11 +1,14 @@
 package com.prep.interview.dsa.linkedlist;
 
 public class Node<T> {
-     T data;  // to hold data or value
-     Node<T> next; //to next node pointer
+     public T data;  // to hold data or value
+     public Node<T> next; //to next node pointer
 
     public Node(T data) {
         this.data = data;
+    }
+    public Node() {
+
     }
 
     @Override

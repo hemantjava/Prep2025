@@ -139,17 +139,25 @@ public class LinkedList<T> {
         return delNode;
     }
 
-    void reverse() {
+    // Iterative O(n) approach to reverse a linked list
+    Node<T> reverse() {
+        // 'current' starts from head of the list
         Node<T> current = head;
+        // 'previous' will eventually point to the new head
         Node<T> previous = null;
+        // Loop through the entire list
         while (current != null) {
-            Node<T>  next = current.next;
+            // Save the next node (otherwise we'll lose the link)
+            Node<T> next = current.next;
+            // Reverse the pointer: current node points to 'previous' instead of 'next'
             current.next = previous;
-            previous = current; //head,current 2nd
+            // Move 'previous' one step forward (to current node)
+            previous = current;
+            // Move 'current' one step forward (to saved 'next')
             current = next;
         }
-
-        head = previous;
+        // At the end, 'previous' is pointing to the new head of the reversed list
+        return previous;
     }
 
     private Node reverseRecursion(Node node) {
@@ -179,18 +187,20 @@ public class LinkedList<T> {
         }
         return -1;
     }
-    public T findMiddleNode(){
+
+    public T findMiddleNode() {
         Node<T> temp = head;
         Node<T> slow = temp;
         Node<T> fast = temp;
-        while (fast !=null && fast.next !=null){
-             slow = slow.next;
-             fast = fast.next.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
         return slow.data;
     }
+
     // Recursive function to merge two sorted lists
-    public Node<T> mergeTwoLists(Node<T>  list1, Node<T>  list2) {
+    public Node<T> mergeTwoLists(Node<T> list1, Node<T> list2) {
         // Base cases:
         if (list1 == null)
             return list2; // If list1 is empty, return list2
@@ -198,7 +208,7 @@ public class LinkedList<T> {
             return list1; // If list2 is empty, return list1
 
         // Recursive case:
-        if ((int)list1.data <= (int)list2.data) {
+        if ((int) list1.data <= (int) list2.data) {
             // list1's value is smaller, keep list1 node
             list1.next = mergeTwoLists(list1.next, list2);
             return list1;
@@ -210,18 +220,42 @@ public class LinkedList<T> {
     }
 
     public boolean hasCycle(Node<T> head) {
-        Node<T> slow=head;
-        Node<T> fast=head;
+        Node<T> slow = head;
+        Node<T> fast = head;
 
-        while(fast!=null && fast.next!=null){
-            slow=slow.next;
-            fast=fast.next.next;
-            if(slow==fast){
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
                 return true;
             }
         }
         return false;
     }
+  /*  public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
+        ListNode dummy = new ListNode();
+        ListNode current = dummy;
+        int carry = 0;
 
+        while (l1 != null || l2 != null || carry != 0) {
+            int sum = carry;
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+
+            }
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+
+            }
+
+            carry = sum / 10;
+            current.next = new ListNode(sum % 10);
+            current = current.next;
+
+        }
+        return dummy.next;
+    }*/
 }

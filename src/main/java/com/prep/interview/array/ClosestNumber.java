@@ -12,17 +12,15 @@ public class ClosestNumber {
     }
 
     private static int findClosest(int[] array, int target) {
-        int closest = array[0];
+        int closest = array[0]; //assumed
         int distance = target - closest;
         for (int i = 1; i < array.length; i++) {
-            int currentDistance = target - array[i];
-            if (currentDistance < distance) { //find minimum distance
-                closest = array[i]; // number what we are looking
-                distance = currentDistance;//swapping minimum distance
+            int min = target - array[i];
+            if (min < distance) {  //updating closest and min
+                closest = array[i];
+                distance = min;
             }
-
         }
-
         return closest;
     }
 }
