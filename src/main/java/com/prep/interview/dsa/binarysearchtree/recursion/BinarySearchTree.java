@@ -1,9 +1,6 @@
 package com.prep.interview.dsa.binarysearchtree.recursion;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class BinarySearchTree<T extends Comparable<T>> {
@@ -175,15 +172,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return result;
     }
 
-    //Imp
+    //Imp Iterative
     public List<List<T>> levelOrderTraversal() {
         Queue<Node<T>> queue = new LinkedList<>();
         List<List<T>> result = new ArrayList<>();
         if (root == null) return result;
+        //Adding root to the queue
         queue.add(root);
 
         while (!queue.isEmpty()) {
-            int levelSize = queue.size();  // Number of nodes at current level
+            int levelSize = queue.size();  // Number of nodes(size) at current level
             List<T> currentLevel = new ArrayList<>();
 
             for (int i = 0; i < levelSize; i++) {
@@ -191,11 +189,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
                 currentLevel.add(currentNode.data);
 
                 if (currentNode.left != null) {
-                    queue.add(currentNode.left);
+                    queue.add(currentNode.left);  //Adding leave node into queue
                 }
 
                 if (currentNode.right != null) {
-                    queue.add(currentNode.right);
+                    queue.add(currentNode.right); //Adding leave node into queue
                 }
             }
 
@@ -248,6 +246,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return isValid(node.left, min, (long) node.val) && isValid(node.right, (long) node.val, max);
     }
 
+
+    //Iterative
+    // ✅ Time: O(n) (visit all nodes in worst case)
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         while (root != null) {
             if (p.val > root.val && q.val > root.val) {
@@ -260,6 +261,31 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
         return null;
     }
+
+    //Recursive
+       /*
+    ✅ Time: O(n) (visit all nodes in worst case)
+    ✅ Space: O(h) (recursive stack, h = height)
+     */
+    public TreeNode lowestCommonAncestor1(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) {
+            return root;  // Base case
+        }
+
+        // Search in left and right subtrees
+        TreeNode left = lowestCommonAncestor1(root.left, p, q);
+        TreeNode right = lowestCommonAncestor1(root.right, p, q);
+
+        // If both sides return non-null, root is LCA
+        if (left != null && right != null) {
+            return root;
+        }
+
+        // Otherwise, return non-null side
+        return (left != null) ? left : right;
+    }
+
+
     // Global variable to track the maximum diameter found so far
     private int diameter = 0;
 
@@ -300,10 +326,112 @@ public class BinarySearchTree<T extends Comparable<T>> {
             return null;
         }
         // Swap left and right subtrees
-       TreeNode temp = root.left;
+        TreeNode temp = root.left;
         root.left = mirror(root.right);
         root.right = mirror(temp);
 
         return root;
     }
+
+    public int maxDepth(TreeNode root) {
+        if (root == null) return 0;
+        return dfs(root);
+
+    }
+
+    private int dfs(TreeNode root) {
+        if (root == null) return 0; //base case for recursion
+        int left = dfs(root.left);
+        int right = dfs(root.right);
+        return 1 + Math.max(left, right); //1 for current root not
+    }
+
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        return dfsm(root);
+    }
+
+    private int dfsm(TreeNode root) {
+        if (root == null) return Integer.MAX_VALUE; //base case for recursion
+        if (root.left == null && root.right == null) return 1; //if only root node present
+        int left = dfsm(root.left);
+        int right = dfsm(root.right);
+        return 1 + Math.min(left, right);
+    }
+
+
+    /**
+     * Root node is at diagonal 0.
+     * When you go right, you stay in the same diagonal.
+     * When you go left, you move to the next diagonal (d+1).
+     * Store nodes in a Map<Integer, List<Integer>> where key = diagonal number.
+     */
+    public static void printDiagonal(TreeNode root) {
+        Map<Integer, List<Integer>> map = new TreeMap<>();
+        diagonalUtil(root, 0, map);
+
+        // Print diagonals
+        for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+            System.out.println(entry.getValue());
+        }
+    }
+
+    // Recursive helper
+    private static void diagonalUtil(TreeNode node, int d, Map<Integer, List<Integer>> map) {
+        if (node == null) return;
+
+        // Put this node into its diagonal list
+        map.computeIfAbsent(d, k -> new ArrayList<>()).add(node.val);
+
+        // Left child → next diagonal
+        diagonalUtil(node.left, d + 1, map);
+
+        // Right child → same diagonal
+        diagonalUtil(node.right, d, map);
+    }
+
+
+    // 2nd Ways
+    // Function to print all diagonals
+    public static void printDiagonals(TreeNode root) {
+        while (root != null) {
+            // Print one diagonal
+            printDiagonalNodes(root);
+            System.out.println();
+
+            // Move to next diagonal (left child)
+            root = root.left;
+        }
+    }
+    // Recursive function to print all nodes of a diagonal starting from node
+    private static void printDiagonalNodes(TreeNode node) {
+        if (node == null) return;
+
+        // Keep going right in the same diagonal
+        System.out.print(node.val + " ");
+        printDiagonalNodes(node.right);
+    }
+
+
+    public boolean isBalanced(TreeNode root) {
+        return checkHeight(root) != -1;
+    }
+
+    private int checkHeight(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        int leftHeight = checkHeight(node.left);
+        if (leftHeight == -1) return -1;
+
+        int rightHeight = checkHeight(node.right);
+        if (rightHeight == -1) return -1;
+
+        if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+
 }
