@@ -5,17 +5,17 @@ public class Main {
         PaymentContext context = new PaymentContext();
 
         // Pay via Credit Card
-        CreditCardPayment paymentStrategy = new CreditCardPayment("1234-5678-9876-5432");
+        PaymentStrategy paymentStrategy = new CreditCardPayment("1234-5678-9876-5432");
         context.setPaymentStrategy(paymentStrategy);
         context.payBill(2500.0);
 
         // Switch to PayPal
-        PayPalPayment paymentStrategy1 = new PayPalPayment("hemant@example.com");
+        PaymentStrategy paymentStrategy1 = new PayPalPayment("hemant@example.com");
         context.setPaymentStrategy(paymentStrategy1);
         context.payBill(1200.0);
 
         // Switch to UPI
-        UpiPayment paymentStrategy2 = new UpiPayment("hemant@upi");
+        PaymentStrategy paymentStrategy2 = new UpiPayment("hemant@upi");
         context.setPaymentStrategy(paymentStrategy2);
         context.payBill(500.0);
     }

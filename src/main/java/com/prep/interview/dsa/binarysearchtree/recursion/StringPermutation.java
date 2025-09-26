@@ -1,22 +1,40 @@
 package com.prep.interview.dsa.binarysearchtree.recursion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StringPermutation {
 
-    public static void permute(String str, String result) {
-        if (str.isEmpty()) {
-            System.out.println(result);
-            return;
-        }
+    public static void main(String[] args) {
+        String str = "abc";
+        permute("", str);
+        // ----------------------
+        List<String> list = new ArrayList<>();
+        String val = "abc";
+        permute("", val, list);
+        System.out.println(list);
 
-        for (int i = 0; i < str.length(); i++) {
-            char picked = str.charAt(i);
-            String remaining = str.substring(0, i) + str.substring(i + 1);
-            permute(remaining, result + picked);
+    }
+
+    private static void permute(String prefix, String remaining) {
+        if (remaining.isEmpty()) {
+            System.out.println(prefix);
+        } else {
+            for (int i = 0; i < remaining.length(); i++) {
+                permute(prefix + remaining.charAt(i),
+                        remaining.substring(0, i) + remaining.substring(i + 1));
+            }
         }
     }
 
-    public static void main(String[] args) {
-        String str = "abcd";
-        permute(str, "");
+    private static void permute(String prefix, String remaining, List<String> list) {
+        if (remaining.isEmpty()) {
+            list.add(prefix);
+        } else {
+            for (int i = 0; i < remaining.length(); i++) {
+                permute(prefix + remaining.charAt(i),
+                        remaining.substring(0, i) + remaining.substring(i + 1), list);
+            }
+        }
     }
 }

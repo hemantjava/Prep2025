@@ -1,9 +1,11 @@
 package com.prep.interview.dsa.binarysearchtree.recursion;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 public class BinarySearchTree<T extends Comparable<T>> {
+    Logger logger = Logger.getLogger(BinarySearchTree.class.getName());
     private Node<T> root;
 
     public Node<T> getRoot() {
@@ -371,9 +373,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         diagonalUtil(root, 0, map);
 
         // Print diagonals
-        for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
-            System.out.println(entry.getValue());
-        }
+        System.out.println(map.values());
     }
 
     // Recursive helper
@@ -381,7 +381,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         if (node == null) return;
 
         // Put this node into its diagonal list
-        map.computeIfAbsent(d, k -> new ArrayList<>()).add(node.val);
+        map.computeIfAbsent(d, ArrayList::new).add(node.val);
 
         // Left child → next diagonal
         diagonalUtil(node.left, d + 1, map);
@@ -398,15 +398,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
             // Print one diagonal
             printDiagonalNodes(root);
             System.out.println();
-
             // Move to next diagonal (left child)
             root = root.left;
         }
     }
+
     // Recursive function to print all nodes of a diagonal starting from node
     private static void printDiagonalNodes(TreeNode node) {
         if (node == null) return;
-
         // Keep going right in the same diagonal
         System.out.print(node.val + " ");
         printDiagonalNodes(node.right);

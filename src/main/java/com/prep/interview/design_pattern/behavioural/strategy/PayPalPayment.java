@@ -1,11 +1,6 @@
 package com.prep.interview.design_pattern.behavioural.strategy;
 
-public class PayPalPayment implements PaymentStrategy {
-    private String email;
-
-    public PayPalPayment(String email) {
-        this.email = email;
-    }
+public record PayPalPayment(String email) implements PaymentStrategy {
 
     @Override
     public void pay(double amount) {

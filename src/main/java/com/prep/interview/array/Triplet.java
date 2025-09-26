@@ -5,7 +5,6 @@ import java.util.*;
 public class Triplet {
     static void main() {
         int[] arr = {-1, 0, 1, 2, -1, -4};
-        ;
         int target = 0;
         System.out.println(hasTripletSum(arr, target));
         System.out.println(hasTripletSum1(arr, target));
@@ -18,7 +17,6 @@ public class Triplet {
 
         // Fix the first element as arr[i]
         for (int i = 0; i < n - 2; i++) {
-
             // Hash set to store potential second elements
             Set<Integer> st = new HashSet<>();
 

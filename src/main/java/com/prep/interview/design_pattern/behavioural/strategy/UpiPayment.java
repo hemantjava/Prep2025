@@ -1,11 +1,6 @@
 package com.prep.interview.design_pattern.behavioural.strategy;
 
-public class UpiPayment implements PaymentStrategy {
-    private String upiId;
-
-    public UpiPayment(String upiId) {
-        this.upiId = upiId;
-    }
+public record UpiPayment(String upiId) implements PaymentStrategy {
 
     @Override
     public void pay(double amount) {
