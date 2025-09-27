@@ -75,3 +75,25 @@ the top 10 essential Docker commands for managing containers, images, volumes, a
     docker-compose down
      ```
     The first command starts all services defined in a docker-compose.yml file in detached mode, while the second stops and removes them.
+11. Dockerfile
+
+```dockerfile
+# 1. Base image
+FROM openjdk:17
+
+# 2. Working directory
+WORKDIR /app
+
+# 3. Copy files
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+
+# 4. Expose port
+EXPOSE 5000
+
+ADD target/spring-rest.jar spring-rest.jar
+# 5. Run the application
+CMD ["python", "app.py"]
+ENTRYPOINT ["java", "-jar","/spring-rest.jar"]
+```
