@@ -295,6 +295,42 @@ private final Database database;
     }
 
 }
+// OR
+interface NotificationService {
+    void notify(String message);
+}
+
+class EmailService implements NotificationService {
+    public void notify(String message) {
+        System.out.println("Sending email: " + message);
+    }
+}
+
+class SmsService implements NotificationService {
+    public void notify(String message) {
+        System.out.println("Sending SMS: " + message);
+    }
+}
+
+class PatientNotifier {
+    private NotificationService service;
+
+    public PatientNotifier(NotificationService service) {
+        this.service = service;
+    }
+
+    public void notify(String msg) {
+        service.notify(msg);
+    }
+}
+
+public class HealthcareDemo {
+    public static void main(String[] args) {
+        PatientNotifier notifier = new PatientNotifier(new SmsService());
+        notifier.notify("Appointment reminder");
+    }
+}
+
 ```
 Now, UserService depends on the Database abstraction, allowing easy substitution of database implementations.
 

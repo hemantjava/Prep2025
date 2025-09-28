@@ -10,4 +10,5 @@ public class CustomerDiscount {
     public double getDiscount(double totSale) {
         return discount.getDiscount(totSale);
     }
+
 }
