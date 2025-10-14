@@ -7,7 +7,7 @@ import java.util.Map;
 public class Anagram {
     public static void main(String[] args) {
         System.out.println(isValidAnagram("anagram", "mnagraa"));
-        System.out.println(isAnagram("anagram", "mnagraa"));
+        System.out.println(isAnagram("anagr am".replaceAll("\\s+",""), "mn agraa".replaceAll(" ","")));
         System.out.println(isAnagramMap("anagrAM", "MnAgraa"));
         System.out.println('A' - 'a');
     }
@@ -30,10 +30,9 @@ public class Anagram {
         if (s.length() != t.length()) return false;
 
         int[] count = new int[26]; // for lowercase a-z  (0-25)
-
         for (int i = 0; i < s.length(); i++) {
-            count[s.charAt(i) - 'a']++;
-            count[t.charAt(i) - 'a']--;
+                count[s.charAt(i) - 'a']++;
+                count[t.charAt(i) - 'a']--;
         }
 
         for (int val : count) {
