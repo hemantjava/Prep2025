@@ -1,6 +1,5 @@
 package com.prep.interview.multiThreading.blockingqueue;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -12,8 +11,9 @@ public class ProducerConsumerBlockingQueue {
         Thread consumerThread = new Thread(new Consumer(queue));
 
         //start the threads
-        consumerThread.start();
         producerThread.start();
+        consumerThread.start();
+
 
     }
 }

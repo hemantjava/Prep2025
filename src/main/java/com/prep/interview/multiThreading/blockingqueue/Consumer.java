@@ -6,14 +6,17 @@ public record Consumer(BlockingQueue<Integer> queue) implements Runnable {
     @Override
     public void run() {
         try {
-            Integer value = queue.remove();//take a value from the queue
-            System.out.println("Consumer: " + value +":"+Thread.currentThread().getName());
-            Thread.sleep(1000);
-
+            while (true) {
+                Integer value = queue.take(); // Blocks if queue is empty
+                if (value == -1) { // Poison pill detected
+                    System.out.println("Consumer received stop signal. Exiting...");
+                    break;
+                }
+                System.out.println(Thread.currentThread().getName()+" :Consumer consumed: " + value);
+                Thread.sleep(800); // Simulate processing time
+            }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            System.out.println("Interrupted");
         }
-
     }
 }
