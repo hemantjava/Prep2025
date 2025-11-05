@@ -6,7 +6,7 @@ import java.util.List;
 public class NodesAtDistanceK {
 
 
-    // Example usage
+    // AtomicCounterWithLock usage
     public static void main(String[] args) {
         TreeNode<Integer> root = new TreeNode<>(1);
         root.left = new TreeNode<>(2);

@@ -211,7 +211,7 @@ public class OrderConsumer {
         String orderId = record.key();
         String payload = record.value();
 
-        // Example: Idempotent processing using UPSERT
+        // AtomicCounterWithLock: Idempotent processing using UPSERT
         System.out.println("Processing order: " + orderId + " -> " + payload);
 
         // e.g., write to DB with UPSERT by orderId (ensures no duplicates)

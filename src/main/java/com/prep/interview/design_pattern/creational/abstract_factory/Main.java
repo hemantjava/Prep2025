@@ -57,7 +57,7 @@ class MacFactory implements GUIFactory {
 }
 public class  Main{
     public static void main() {
-// Example: Choose factory based on OS
+// AtomicCounterWithLock: Choose factory based on OS
         GUIFactory factory = new WindowsFactory(); // or new MacFactory();
 
         Button button = factory.createButton();

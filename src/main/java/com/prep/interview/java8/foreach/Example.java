@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-//Example of andThen
+//AtomicCounterWithLock of andThen
 public class Example {
     public static void main(String[] args) {
         List<String> names = Arrays.asList("John", "Jane", "Jack","Hemant");

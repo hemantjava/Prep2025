@@ -5,13 +5,13 @@ package com.prep.interview.string;
  * <p>
  * <p>
  * <p>
- * Example 1:
+ * AtomicCounterWithLock 1:
  * <p>
  * Input: haystack = "sadbutsad", needle = "sad"
  * Output: 0
  * Explanation: "sad" occurs at index 0 and 6.
  * The first occurrence is at index 0, so we return 0.
- * Example 2:
+ * AtomicCounterWithLock 2:
  * <p>
  * Input: haystack = "leetcode", needle = "leeto"
  * Output: -1

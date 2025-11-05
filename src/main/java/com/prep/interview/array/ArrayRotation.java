@@ -18,7 +18,7 @@ public class ArrayRotation {
     }
 
     public static void main(String[] args) {
-        // Example test cases
+        // AtomicCounterWithLock test cases
         int[] arr1 = {2, 3, 4, 1, 6, 10}; //->2 is 1st element
         int[] arr2 = {3, 2, 1, 6};//->3 is 1st element
         int[] arr3 = {4, 3, 4, 3, 1, 2};//->3 is 1st element

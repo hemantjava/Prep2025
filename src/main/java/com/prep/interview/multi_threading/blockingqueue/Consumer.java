@@ -12,7 +12,7 @@ public record Consumer(BlockingQueue<Integer> queue) implements Runnable {
                     System.out.println("Consumer received stop signal. Exiting...");
                     break;
                 }
-                System.out.println(Thread.currentThread().getName()+" :Consumer consumed: " + value);
+                System.out.println(STR."\{Thread.currentThread().getName()} :Consumer consumed: \{value}");
                 Thread.sleep(800); // Simulate processing time
             }
         } catch (InterruptedException e) {

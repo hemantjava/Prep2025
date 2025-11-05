@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * Given an integer array nums sorted in non-decreasing order, remove some duplicates in-place such that each unique
  * element appears at most twice.The relative order of the elements should be kept the same.
- * Example 1:
+ * AtomicCounterWithLock 1:
  *
  * Input: nums = [1,1,1,2,2,3]
  * Output: 5, nums = [1,1,2,2,3,_]

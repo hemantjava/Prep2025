@@ -1,6 +1,7 @@
 package com.prep.interview.collection.map.hashmap;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /*
        EXPECTED OUTPUT:
@@ -22,6 +23,7 @@ public class GroupOfAnagrams {
 
         System.out.println("\n2nd set:");
         System.out.println(groupAnagrams(new String[]{"abc", "cba", "bac", "foo", "bar"}));
+        System.out.println(groupAnagrams1(new String[]{"abc", "cba", "bac", "foo", "bar"}));
 
         System.out.println("\n3rd set:");
         System.out.println(groupAnagrams(new String[]{"listen", "silent", "triangle", "integral", "garden", "ranged"}));
@@ -38,6 +40,15 @@ public class GroupOfAnagrams {
             map.computeIfAbsent(sortString, v -> new ArrayList<>()).add(str);
         }
         return map.values().stream().toList();
+    }
+
+    public static  List<List<String>> groupAnagrams1(String[] input) {
+        return Arrays.stream(input)
+                .collect(Collectors.groupingBy(str -> {
+                    char[] chars = str.toCharArray();
+                    Arrays.sort(chars);
+                    return String.valueOf(chars);
+                }, LinkedHashMap::new, Collectors.toList())).values().stream().toList();
     }
 
 }

@@ -4,18 +4,18 @@ package com.prep.interview.core_java;
 public class CallByValue {
     public static void main(String[] args) {
 
-        // Step 1: Primitive Example
+        // Step 1: Primitive AtomicCounterWithLock
         int a = 15;                         // 'a' is a primitive variable, value = 15
         updatePrimitive(a);                 // Passes a copy of 'a' (15) to the method
         System.out.println(a);              // Prints 15, because primitive values are not changed
 
-        // Step 2: Mutable Object Example
+        // Step 2: Mutable Object AtomicCounterWithLock
         StringBuilder name = new StringBuilder("Hemant");
         // 'name' refers to a StringBuilder object in heap with content "Hemant"
         updateReference(name);              // Passes the reference (address) to the method
         System.out.println(name);           // Prints "Hemant sahu", because StringBuilder is mutable
 
-        // Step 3: Immutable Object Example
+        // Step 3: Immutable Object AtomicCounterWithLock
         String nameStr = "Hemant";          // 'nameStr' refers to a String object in the String Pool
         updateImmutableString(nameStr);     // A new String is created inside method,
         // but 'nameStr' in main is not updated

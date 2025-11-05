@@ -8,11 +8,11 @@ How It Works
  */
 public class BestTimeBuyAndSell {
     public static void main(String[] args) {
-        // Example 1
+        // AtomicCounterWithLock 1
         int[] prices1 = {7, 1, 5, 3, 6, 4}; //-> look forward for from low to high (left to right hand side)
         System.out.println("Max Profit: " + maxProfit(prices1)); // Output: 7
 
-        // Example 2
+        // AtomicCounterWithLock 2
         int[] prices2 = {7, 6, 4, 3, 1};
         System.out.println("Max Profit: " + maxProfit(prices2)); // Output: 0
     }

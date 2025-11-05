@@ -31,7 +31,7 @@ public class RomanToInteger {
         return total;
     }
     public static void main(String[] args) {
-        String roman = "IV"; // Example: 1994
+        String roman = "IV"; // AtomicCounterWithLock: 1994
         int result = romanToInt(roman);
         System.out.println("The integer value of Roman numeral " + roman + " is: " + result);
     }

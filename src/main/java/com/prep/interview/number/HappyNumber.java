@@ -26,10 +26,10 @@ public class HappyNumber {
     }
 
     public static void main(String[] args) {
-        int n1 = 19; // Example 1
+        int n1 = 19; // AtomicCounterWithLock 1
         System.out.println("Is " + n1 + " a happy number? " + isHappy(n1)); // Output: true =>19 ->82 -> 68->100->
 
-        int n2 = 2; // Example 2
+        int n2 = 2; // AtomicCounterWithLock 2
         System.out.println("Is " + n2 + " a happy number? " + isHappy(n2)); // Output: false
     }
 }
