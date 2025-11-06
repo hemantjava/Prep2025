@@ -18,12 +18,9 @@ public class Main {
                 new Employee(6, "Eve", "IT", 80000),
                 new Employee(7, "Frank", "Finance", 64000),
                 new Employee(8, "Aia", "Operations", 44000));
-
-        Map.Entry<Character, Long> collect = employees.stream()
-                .map(employee -> Character.toUpperCase(employee.name().charAt(0)))
-                .collect(Collectors.collectingAndThen(Collectors.groupingByConcurrent(Function.identity(), Collectors.counting())
-                        , map ->
-                                map.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getValue).orElse(null)));
-        System.out.println(collect);
+        employees.stream().collect(Collectors.groupingBy(Employee::department, Collectors.collectingAndThen(
+                Collectors.maxBy(Comparator.comparingDouble(Employee::salary)),
+                e -> e.map(Employee::salary).orElse(0.0)
+        ))).forEach((k, v) -> System.out.println(k + " : " + v));
     }
 }

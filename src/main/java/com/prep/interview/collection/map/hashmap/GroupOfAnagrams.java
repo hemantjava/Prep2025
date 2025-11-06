@@ -28,6 +28,7 @@ public class GroupOfAnagrams {
         System.out.println("\n3rd set:");
         System.out.println(groupAnagrams(new String[]{"listen", "silent", "triangle", "integral", "garden", "ranged"}));
 
+        printOddAndEven(List.of(1,2,3,4,5,6,7,8,9));
     }
 
     public static List<List<String>> groupAnagrams(String[] input) {
@@ -49,6 +50,11 @@ public class GroupOfAnagrams {
                     Arrays.sort(chars);
                     return String.valueOf(chars);
                 }, LinkedHashMap::new, Collectors.toList())).values().stream().toList();
+    }
+
+    public static void printOddAndEven(List<Integer> integers){
+        integers.stream().collect(Collectors.groupingBy(num -> num % 2 == 0 ? "Even" : "Odd"))
+                .forEach((k,v)-> System.out.println(k+" : "+v));
     }
 
 }
