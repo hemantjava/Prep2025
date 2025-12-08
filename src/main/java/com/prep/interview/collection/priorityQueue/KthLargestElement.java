@@ -14,18 +14,14 @@ import java.util.PriorityQueue;
 public class KthLargestElement {
 
     public static int findKthLargest(int[] nums, int k) {
-        // Min-heap to store the top k largest elements
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>(); // by default mean heap minimum elements at top
 
         for (int num : nums) {
             minHeap.add(num);
-            // Keep the heap size at most k
             if (minHeap.size() > k) {
-                minHeap.poll();  // Remove smallest in the heap
+                minHeap.poll();  // Remove smallest in the heap from top to maintain heap k size
             }
         }
-
-        System.out.println(minHeap);//[5, 6]
         return minHeap.isEmpty() ? -1 : minHeap.peek();  // The root of the min-heap is the k-th largest element
     }
 

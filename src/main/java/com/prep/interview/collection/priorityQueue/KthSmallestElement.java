@@ -6,18 +6,15 @@ import java.util.PriorityQueue;
 public class KthSmallestElement {
 
     public static int findKthSmallest(int[] nums, int k) {
-        // Max-heap to store the k smallest elements
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());// Max heap
 
         for (int num : nums) {
             maxHeap.add(num);
-
-            // Keep the heap size at most k
             if (maxHeap.size() > k) {
-                maxHeap.poll();  // Remove the largest in the heap
+                maxHeap.poll();  // Remove the largest in the heap from top to maintain k size
             }
         }
-
         // The root of the max-heap is the k-th smallest element
         return maxHeap.isEmpty() ? -1 : maxHeap.peek();
     }
