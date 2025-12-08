@@ -1,5 +1,3 @@
-Here’s a complete and **interview-ready list of the Top 10 Java 17 features** — with **short notes + simple examples** 👇
-
 ---
 
 ## ☕️ Java 17 – LTS Release (Sept 2021)

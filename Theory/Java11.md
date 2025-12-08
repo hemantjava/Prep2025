@@ -14,7 +14,7 @@
 * New Pattern Matching with Predicate.not()
     * A new static method **Predicate.not()** allows for easier negation in predicates.
 * Collection.toArray Method
-    * Java 11 simplified converting collections to arrays by adding an overload of toArray.
+    * Java 11 simplified converting collections to arrays by adding an overload of toArray().
 * Unicode 10 Support
     * Java 11 supports Unicode 10, adding symbols like new currency signs and emojis.
 * New Collection Factories in Collectors

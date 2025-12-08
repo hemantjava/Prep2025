@@ -239,3 +239,4 @@ server:
     mime-types: application/json,application/xml,text/html,text/xml,text/plain,text/css,application/javascript
     min-response-size: 10KB # avoid compression <10KB [CUP usage]
 ```
+![img2.png](../images/security/img2.png)

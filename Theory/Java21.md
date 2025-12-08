@@ -43,12 +43,12 @@ System.out.println(x + ", " + y);
 
 ```java
 static String formatter(Object obj) {
-return switch (obj) {
-case Integer i -> "int: " + i;
-case String s -> "str: " + s;
-case null     -> "null";
-default       -> "unknown";
-};
+  return switch (obj) {
+    case Integer i -> "int: " + i;
+    case String s -> "str: " + s;
+    case null -> "null";
+    default -> "unknown";
+  };
 }
 
 ```

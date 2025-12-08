@@ -100,8 +100,9 @@ The internal implementation of HashMap in Java 8 significant changes to improve 
 particularly in scenarios with high hash collisions.
 
 > Buckets and Nodes:
-  * A HashMap stores key-value pairs in a bucket using an array of Node objects, where each node represents a linked list.
-![img.png](img.png)
+  * A HashMap stores key-value pairs in a bucket using an array of Node objects, 
+  * where each node represents a linked list.
+![img.png](../images/security/img2.png)
   * The Node class implements the Map.Entry interface and contains
 ```java
 static class Node<K,V> implements Map.Entry<K,V> {
@@ -115,11 +116,13 @@ static class Node<K,V> implements Map.Entry<K,V> {
 
 * Collisions occur when multiple keys hash to the same bucket.
 * In Java 8, collisions are first resolved with a linked list, as in earlier versions.
-* If the list grows beyond a threshold (default: 8), the linked list is converted into a red-black tree for faster lookups (O(log n) instead of O(n)).
+* If the list grows beyond a threshold (default: >=8), the linked list is converted into a red-black tree 
+  for faster lookups (O(log n) instead of O(n)).
 
 > Key Methods:
 
-* put(K key, V value): Calculates the bucket index using the hash, checks for collisions, and inserts the key-value pair.
+* put(K key, V value): Calculates the bucket index using the hash, checks for collisions, 
+  and inserts the key-value pair.
 * get(Object key): Computes the hash, finds the bucket, and retrieves the value by comparing keys using equals().
 
 > Key Features Introduced in Java 8:
