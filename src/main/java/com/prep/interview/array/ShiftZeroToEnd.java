@@ -11,7 +11,7 @@ public class ShiftZeroToEnd {
         System.out.println(Arrays.toString(arr));
     }
 
-    //Note: writeIndex increment when non 0 occurred and i index occurred every iteration
+    //Note: writeIndex increment when non 0 occurred (look for 0) and i index occurred every iteration
     private static void shiftZeroToEnd(int[] arr) {
         int writeIndex = 0;
         for (int i = 0; i < arr.length; i++) {

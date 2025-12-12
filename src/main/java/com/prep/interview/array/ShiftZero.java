@@ -25,7 +25,7 @@ public class ShiftZero {
         }
     }
 
-    private static void shiftZeroToStart(int[] array) {
+    public static void shiftZeroToStart(int[] array) {
         int index = array.length - 1;
         for (int i = array.length - 1; i >= 0; i--) {
             if (array[i] != 0) {
